@@ -13,14 +13,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
+    Boolean status=false;
     TextView WelcomeUser;
     Button btnLogin;
     EditText textUsuario, textPassword;
+    Integer idUsuario;
+    String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
+    Date ultimaConexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Texto para imprimir los resultados
         WelcomeUser = (TextView) findViewById(R.id.WelcomeUser);
-        //Texto para imprimir los errores
-        //errores = (TextView) findViewById(R.id.textView2);
-
         //Almaceno usuario
         textUsuario = (EditText) findViewById(R.id.txtUser);
         //Almaceno password
@@ -44,23 +46,40 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Las consultas a la BD son tareas asincronas
                 new Async().execute();
-                Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
-                intent.putExtra("dato",textUsuario.getText().toString());
-                startActivity(intent);
+                System.out.println("El estado es: "+status);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (status==true) {
+                    //System.out.println("");
+                    Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
+                    intent.putExtra("idUsuario", idUsuario);
+                    intent.putExtra("usuario", usuario);
+                    intent.putExtra("listaApertura", listaApertura);
+                    intent.putExtra("listaPorterillo", listaPorterillo);
+
+                    startActivity(intent);
+                }
+                else{
+                    WelcomeUser.setText("Usuario o contraseña incorrecta");
+
+                }
+
             }
         });
     }
     //Clase Tarea asíncrona
     class Async extends AsyncTask<Void, Void, Void> {
-        String resultados = "", error = "";
+        String error = "";
         String resUsuario = textUsuario.getText().toString();
         String resPassword = textPassword.getText().toString();
-        String excepcion = "";
 
         @Override
         protected Void doInBackground(Void... voids) {
-
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 //Configuracion de la conexión
@@ -72,28 +91,31 @@ public class MainActivity extends AppCompatActivity {
 
                 while (resultSet.next()) {
                     //Formateo la consulta
-                    resultados += resultSet.getString(1) + " " + resultSet.getString(2) + resultSet.getString(3) + " " + resultSet.getString(4) +
+                    /*resultados += resultSet.getString(1) + " " + resultSet.getString(2) + resultSet.getString(3) + " " + resultSet.getString(4) +
                             " " + resultSet.getString(5) + " " + resultSet.getString(6) + " " + resultSet.getString(7) + " " +
-                            resultSet.getString(8) + "\n";
-
+                            resultSet.getString(8) + "\n";*/
+                    idUsuario=resultSet.getInt(1);
+                    usuario=resultSet.getString(2);
+                    pass=resultSet.getString(3);
+                    ultimaConexion=resultSet.getDate(4);
+                    empresa=resultSet.getString(5);
+                    cif=resultSet.getString(6);
+                    listaApertura=resultSet.getString(7);
+                    listaPorterillo=resultSet.getString(8);
                 }
 
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
             }
-            return null;
+            if (idUsuario!=null){
+                status=true;
+            }
+         return null;
         }
         @Override
         protected void onPostExecute(Void aVoid) {
             //Guardo en la variable del texto el resultado de la consulta
-            if (resultados=="" || resultados=="      "){
-                excepcion ="Usuario o contraseñas incorrecto";
-                WelcomeUser.setText(excepcion);
-
-            }else {
-                WelcomeUser.setText(resultados);
-            }
             if (error != "")
                 //Guardo en la variable del texto el error
                 WelcomeUser.setText(error);
