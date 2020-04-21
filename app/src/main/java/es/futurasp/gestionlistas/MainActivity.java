@@ -1,7 +1,6 @@
 package es.futurasp.gestionlistas;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -40,10 +39,11 @@ public class MainActivity extends AppCompatActivity {
         //Almaceno password
         textPassword = (EditText) findViewById(R.id.txtPassword);
 
-        btnLogin = (Button) findViewById(R.id.btnSesion);
+        btnLogin = (Button) findViewById(R.id.btnApertura);
 
         //Creo el evento del boton
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 //Las consultas a la BD son tareas asincronas
@@ -54,15 +54,25 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (status==true) {
-                    //System.out.println("");
-                    Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
+                if (status) {
+                    if (usuario.equals("admin")){
+                        Intent intent = new Intent(view.getContext(), LoginAdmin.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
+                        intent.putExtra("idUsuario", idUsuario);
+                        intent.putExtra("usuario", usuario);
+                        intent.putExtra("listaApertura", listaApertura);
+                        intent.putExtra("listaPorterillo", listaPorterillo);
+
+                        startActivity(intent);
+                    }
+                    /*Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
                     intent.putExtra("idUsuario", idUsuario);
                     intent.putExtra("usuario", usuario);
                     intent.putExtra("listaApertura", listaApertura);
-                    intent.putExtra("listaPorterillo", listaPorterillo);
-
-                    startActivity(intent);
+                    intent.putExtra("listaPorterillo", listaPorterillo);*/
                 }
                 else{
                     WelcomeUser.setText("Usuario o contraseña incorrecta");
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     //Clase Tarea asíncrona
+    @SuppressLint("StaticFieldLeak")
     class Async extends AsyncTask<Void, Void, Void> {
         String error = "";
         String resUsuario = textUsuario.getText().toString();
@@ -90,10 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 ResultSet resultSet = statement.executeQuery("select * from usuarios where usuario = '"+resUsuario+"' and pass = '"+resPassword+"'");
 
                 while (resultSet.next()) {
-                    //Formateo la consulta
-                    /*resultados += resultSet.getString(1) + " " + resultSet.getString(2) + resultSet.getString(3) + " " + resultSet.getString(4) +
-                            " " + resultSet.getString(5) + " " + resultSet.getString(6) + " " + resultSet.getString(7) + " " +
-                            resultSet.getString(8) + "\n";*/
                     idUsuario=resultSet.getInt(1);
                     usuario=resultSet.getString(2);
                     pass=resultSet.getString(3);
@@ -112,16 +119,6 @@ public class MainActivity extends AppCompatActivity {
                 status=true;
             }
          return null;
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            //Guardo en la variable del texto el resultado de la consulta
-            if (error != "")
-                //Guardo en la variable del texto el error
-                WelcomeUser.setText(error);
-
-            super.onPostExecute(aVoid);
-
         }
     }
 }
