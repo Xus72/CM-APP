@@ -17,9 +17,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class LoginAdmin extends AppCompatActivity {
-    ArrayList<String> listaUsuarios = new ArrayList<>();
+    List<String> listaUsuarios = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -43,15 +45,18 @@ public class LoginAdmin extends AppCompatActivity {
 
         new ListUsuarios().execute();
 
-        ArrayAdapter<String> adp = new ArrayAdapter<>(LoginAdmin.this, android.R.layout.simple_spinner_dropdown_item, listaUsuarios);
+        System.out.println(listaUsuarios.size());
+
+        ArrayAdapter<String> adp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listaUsuarios);
 
         mSpinner.setAdapter(adp);
 
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String elemento = (String) mSpinner.getAdapter().getItem(position);
-                Toast.makeText(LoginAdmin.this,"Seleccionastes: "+elemento, Toast.LENGTH_SHORT).show();
+                String item = parent.getItemAtPosition(position).toString();
+                Toast msg = Toast.makeText(parent.getContext(),"Seleccionaste:" + item,Toast.LENGTH_LONG);
+                msg.show();
             }
 
             @Override
@@ -62,6 +67,7 @@ public class LoginAdmin extends AppCompatActivity {
 
 
     }
+
     class ListUsuarios extends AsyncTask<Void, Void, Void> {
         String error = "";
 

@@ -20,7 +20,6 @@ import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
     Boolean status=false;
-    TextView WelcomeUser;
     Button btnLogin;
     EditText textUsuario, textPassword;
     Integer idUsuario;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Texto para imprimir los resultados
-        WelcomeUser = (TextView) findViewById(R.id.WelcomeUser);
         //Almaceno usuario
         textUsuario = (EditText) findViewById(R.id.txtUser);
         //Almaceno password
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (status) {
                     if (usuario.equals("admin")){
-                        Intent intent = new Intent(view.getContext(), LoginAdmin.class);
+                        Intent intent = new Intent(view.getContext(), LoginAdmin.class);intent.putExtra("idUsuario", idUsuario);
                         startActivity(intent);
                     }
                     else {
