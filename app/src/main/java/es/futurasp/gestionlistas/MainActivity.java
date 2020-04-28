@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -75,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("listaPorterillo", listaPorterillo);*/
                 }
                 else{
-                    WelcomeUser.setText("Usuario o contraseña incorrecta");
+                    //WelcomeUser.setText("Usuario o contraseña incorrecta");
+                    Toast alertaMensaje = Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_LONG);
+                    alertaMensaje.show();
 
                 }
 
