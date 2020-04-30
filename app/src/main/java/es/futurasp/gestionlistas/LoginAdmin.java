@@ -17,17 +17,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class LoginAdmin extends AppCompatActivity {
-    List<String> listaUsuarios = new ArrayList<>();
+    ArrayList<String> listaUsuarios = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_admin);
 
-        final Spinner mSpinner = (Spinner) findViewById(R.id.mSpinner);
+        final Spinner spinnerUsuarios = (Spinner) findViewById(R.id.spinner);
+        Button btnSeleccionar = (Button) findViewById(R.id.btnSeleccionarUsuario);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
 
         btnVolver.setOnClickListener(new View.OnClickListener() {
@@ -38,36 +37,23 @@ public class LoginAdmin extends AppCompatActivity {
             }
 
         });
-        Integer idUsuario = getIntent().getIntExtra("idUsuario", 0);
-        String usuario = getIntent().getStringExtra("usuario");
-        String listaApertura = getIntent().getStringExtra("listaApertura");
-        String listaPorterillo = getIntent().getStringExtra("listaPorterillo");
+        btnSeleccionar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
+                startActivity(intent);
+                intent.putExtra("idUsuario", adaptador);
+            }
+
+        });
 
         new ListUsuarios().execute();
 
-        System.out.println(listaUsuarios.size());
-
-        ArrayAdapter<String> adp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, listaUsuarios);
-
-        mSpinner.setAdapter(adp);
-
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                Toast msg = Toast.makeText(parent.getContext(),"Seleccionaste:" + item,Toast.LENGTH_LONG);
-                msg.show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(LoginAdmin.this, android.R.layout.simple_spinner_item, listaUsuarios);
+        valorItem = spinnerUsuarios.setAdapter(adaptador);
 
 
     }
-
     class ListUsuarios extends AsyncTask<Void, Void, Void> {
         String error = "";
 

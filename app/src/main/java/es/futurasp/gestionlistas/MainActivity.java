@@ -20,11 +20,13 @@ import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
     Boolean status=false;
+    TextView WelcomeUser;
     Button btnLogin;
     EditText textUsuario, textPassword;
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
     Date ultimaConexion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,53 +35,54 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Texto para imprimir los resultados
+        //WelcomeUser = (TextView) findViewById(R.id.WelcomeUser);
         //Almaceno usuario
         textUsuario = (EditText) findViewById(R.id.txtUser);
         //Almaceno password
         textPassword = (EditText) findViewById(R.id.txtPassword);
-
+        //Boton "Entrar"
         btnLogin = (Button) findViewById(R.id.btnApertura);
 
-        //Creo el evento del boton
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
-                //Las consultas a la BD son tareas asincronas
-                new Async().execute();
-                System.out.println("El estado es: "+status);
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                String verificaUser = textUsuario.getText().toString();
+
+                if (verificaUser.isEmpty()){
+                    textUsuario.setError("No se introdujo ningún usuario");
                 }
-                if (status) {
-                    if (usuario.equals("admin")){
-                        Intent intent = new Intent(view.getContext(), LoginAdmin.class);intent.putExtra("idUsuario", idUsuario);
-                        startActivity(intent);
+                else {
+                    new Async().execute();
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    else {
-                        Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
-                        intent.putExtra("idUsuario", idUsuario);
-                        intent.putExtra("usuario", usuario);
-                        intent.putExtra("listaApertura", listaApertura);
-                        intent.putExtra("listaPorterillo", listaPorterillo);
+                    if (status) {
+                        if (usuario.equals("admin")){
+                            Toast.makeText(MainActivity.this, "Bienvenido admin", Toast.LENGTH_SHORT).show();
 
-                        startActivity(intent);
+                            Intent intent = new Intent(view.getContext(), LoginAdmin.class);
+                            startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "Bienvenido "+usuario, Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
+                            intent.putExtra("idUsuario", idUsuario);
+                            intent.putExtra("usuario", usuario);
+                            intent.putExtra("listaApertura", listaApertura);
+                            intent.putExtra("listaPorterillo", listaPorterillo);
+
+                            startActivity(intent);
+                        }
+
                     }
-                    /*Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
-                    intent.putExtra("idUsuario", idUsuario);
-                    intent.putExtra("usuario", usuario);
-                    intent.putExtra("listaApertura", listaApertura);
-                    intent.putExtra("listaPorterillo", listaPorterillo);*/
-                }
-                else{
-                    //WelcomeUser.setText("Usuario o contraseña incorrecta");
-                    Toast alertaMensaje = Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_LONG);
-                    alertaMensaje.show();
+                    else{
+                        textUsuario.setError("Usuario o contraseña incorrecta");
 
+                    }
+                    //Toast.makeText(MainActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
