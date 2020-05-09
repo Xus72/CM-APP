@@ -53,35 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     new Async().execute();
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (status) {
-                        if (usuario.equals("admin")){
-                            Toast.makeText(MainActivity.this, "Bienvenido admin", Toast.LENGTH_SHORT).show();
-
-                            Intent intent = new Intent(view.getContext(), LoginAdmin.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "Bienvenido "+usuario, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
-                            intent.putExtra("idUsuario", idUsuario);
-                            intent.putExtra("usuario", usuario);
-                            intent.putExtra("listaApertura", listaApertura);
-                            intent.putExtra("listaPorterillo", listaPorterillo);
-
-                            startActivity(intent);
-                        }
-
-                    }
-                    else{
-                        textUsuario.setError("Usuario o contraseña incorrecta");
-
-                    }
-                    //Toast.makeText(MainActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -123,6 +94,34 @@ public class MainActivity extends AppCompatActivity {
                 status=true;
             }
          return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (status) {
+                if (usuario.equals("admin")){
+                    Toast.makeText(MainActivity.this, "Bienvenido admin", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getBaseContext(), LoginAdmin.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Bienvenido "+usuario, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getBaseContext(), BienvenidoActivity.class);
+                    intent.putExtra("idUsuario", idUsuario);
+                    intent.putExtra("usuario", usuario);
+                    intent.putExtra("listaApertura", listaApertura);
+                    intent.putExtra("listaPorterillo", listaPorterillo);
+
+                    startActivity(intent);
+                }
+
+            }
+            else{
+                textUsuario.setError("Usuario o contraseña incorrecta");
+
+            }
         }
     }
 }
