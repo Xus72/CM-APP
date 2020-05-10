@@ -13,6 +13,7 @@ import android.widget.Toast;
 public class GestionUsuariosInsertar extends AppCompatActivity {
     EditText txtInsEmpresa, txtInsPassword, txtInsCif;
     CheckBox checkListaApertura, checkListaPorterillo;
+    boolean checkCheckbox = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,32 +42,6 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 String verificaUser = txtInsEmpresa.getText().toString();
                 String verificaPassword = txtInsPassword.getText().toString();
                 String verificaCif = txtInsCif.getText().toString();
-                final String[] verificaApertura = {"no"};
-                final String[] verificaPorterillo = {"no"};
-
-                checkListaApertura.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked)
-                        {
-                            checkListaApertura.setTextColor(0xff00ff00);
-                            verificaApertura[0] = "si";
-                        }
-                    }
-                });
-                checkListaPorterillo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(isChecked)
-                        {
-                            checkListaPorterillo.setTextColor(0xff00ff00);
-                            verificaPorterillo[0] = "si";
-                        }
-                    }
-                });
-
 
                 if (verificaUser.isEmpty()){
                     txtInsEmpresa.setError("No se introdujo ninguna empresa");
@@ -77,7 +52,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 else if (verificaCif.isEmpty()){
                     txtInsCif.setError("No se introdujo ningún CIF");
                 }
-                else if (verificaApertura[0]=="no" && verificaPorterillo[0]=="no"){
+                else if ((checkListaApertura.isChecked() == false) && (checkListaPorterillo.isChecked() == false)){
                     Toast.makeText(getApplicationContext(),
                             "Debe seleccionar al menos 1 de ellos!", Toast.LENGTH_LONG).show();
                 }
@@ -85,15 +60,8 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Todo correcto", Toast.LENGTH_LONG).show();
                 }
-
-
-
             }
 
         });
-
-
-
-
     }
 }
