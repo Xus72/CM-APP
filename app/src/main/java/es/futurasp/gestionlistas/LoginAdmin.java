@@ -26,13 +26,14 @@ public class LoginAdmin extends AppCompatActivity {
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
     Date ultimaConexion;
+    Spinner spinnerUsuarios;
     //MÉTODO ON CREATE
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_admin);
         //ENLACE BOTONES Y SPINNER
-        final Spinner spinnerUsuarios = (Spinner) findViewById(R.id.mSpinner);
+        spinnerUsuarios = (Spinner) findViewById(R.id.mSpinner);
         Button btnSeleccionar = (Button) findViewById(R.id.btnSeleccionarUsuario);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnGestionUsuario = (Button) findViewById(R.id.btnGestionUsuario);
@@ -67,46 +68,17 @@ public class LoginAdmin extends AppCompatActivity {
 
         });
         new ListUsuarios().execute();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         //ACCION BOTON GESTION USUARIO
         btnGestionUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), GestionUsuarios.class);
+                Intent intent = new Intent(getBaseContext(), GestionUsuarios.class);
                 startActivity(intent);
             }
 
         });
         //CONFIGURACION DEL SPINNER
-        final ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, listaUsuarios);
-        adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerUsuarios.setAdapter(adaptador);
-        spinnerUsuarios.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                itemSeleccionado = adaptador.getItem(position).toString();
-                if (itemSeleccionado.isEmpty()){
-                    System.out.println("No se ha seleccionado nada");
-                }
-                else{
-                    System.out.println("Se ha seleccionado:"+ itemSeleccionado);
-
-                }
-                Toast.makeText(getApplicationContext(),
-                        "Usuario seleccionado : " + itemSeleccionado, Toast.LENGTH_LONG).show();
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-        });
-
+        
 
     }
     //METODO PARA MOSTRAR LA LISTA DE USUARIOS EN EL SPINNER
@@ -134,6 +106,37 @@ public class LoginAdmin extends AppCompatActivity {
                 error = e.toString();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            final ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, listaUsuarios);
+            adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerUsuarios.setAdapter(adaptador);
+            spinnerUsuarios.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    itemSeleccionado = adaptador.getItem(position).toString();
+                    if (itemSeleccionado.isEmpty()){
+                        System.out.println("No se ha seleccionado nada");
+                    }
+                    else{
+                        System.out.println("Se ha seleccionado:"+ itemSeleccionado);
+
+                    }
+                    Toast.makeText(getApplicationContext(),
+                            "Usuario seleccionado : " + itemSeleccionado, Toast.LENGTH_LONG).show();
+
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+
+            });
+
         }
     }
     //METODO PARA VER LOS DATOS DEL USUARIO SELECCIONADO
