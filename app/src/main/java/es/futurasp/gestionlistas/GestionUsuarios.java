@@ -59,18 +59,8 @@ public class GestionUsuarios extends AppCompatActivity {
         public void onClick(View view) {
             //CONSULTO A LA BASE DE DATOS
             new GestionUsuarios.datosUsuarioSeleccionadoGestion().execute();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //LLAMO AL ACTIVITY BIENVENIDO Y LE PASO EL VALOR DE LAS VARIABLES
-            Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
-            intent.putExtra("idUsuario", idUsuario);
-            intent.putExtra("usuario", usuario);
-            intent.putExtra("listaApertura", listaApertura);
-            intent.putExtra("listaPorterillo", listaPorterillo);
-            startActivity(intent);
+
+
         }
 
     });
@@ -95,27 +85,8 @@ public class GestionUsuarios extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Borrando usuario seleccionado : " + itemSeleccionado, Toast.LENGTH_LONG).show();
                 new GestionUsuarios.borrarUsuario().execute();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (resBorrado==1){
-                    Toast.makeText(getApplicationContext(),
-                            "Usuario borrado", Toast.LENGTH_LONG).show();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    //REFRESCO EL ACTIVITY
-                    finish();
-                    startActivity(getIntent());
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),
-                            "Ops! Ha ocurrido algún error a la hora de borrar", Toast.LENGTH_LONG).show();
-                }
+
+
 
 
             }
@@ -209,6 +180,18 @@ public class GestionUsuarios extends AppCompatActivity {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //LLAMO AL ACTIVITY BIENVENIDO Y LE PASO EL VALOR DE LAS VARIABLES
+            Intent intent = new Intent(getBaseContext(), BienvenidoActivity.class);
+            intent.putExtra("idUsuario", idUsuario);
+            intent.putExtra("usuario", usuario);
+            intent.putExtra("listaApertura", listaApertura);
+            intent.putExtra("listaPorterillo", listaPorterillo);
+            startActivity(intent);
+        }
     }
     class borrarUsuario extends AsyncTask<Void, Void, Void> {
         String error = "";
@@ -229,6 +212,27 @@ public class GestionUsuarios extends AppCompatActivity {
                 error = e.toString();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (resBorrado==1){
+                Toast.makeText(getApplicationContext(),
+                        "Usuario borrado", Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //REFRESCO EL ACTIVITY
+                finish();
+                startActivity(getIntent());
+            }
+            else{
+                Toast.makeText(getApplicationContext(),
+                        "Ops! Ha ocurrido algún error a la hora de borrar", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

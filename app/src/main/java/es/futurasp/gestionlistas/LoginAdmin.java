@@ -52,18 +52,6 @@ public class LoginAdmin extends AppCompatActivity {
             public void onClick(View view) {
                 //CONSULTO A LA BASE DE DATOS
                 new datosUsuarioSeleccionado().execute();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //LLAMO AL ACTIVITY BIENVENIDO Y LE PASO EL VALOR DE LAS VARIABLES
-                Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
-                intent.putExtra("idUsuario", idUsuario);
-                intent.putExtra("usuario", usuario);
-                intent.putExtra("listaApertura", listaApertura);
-                intent.putExtra("listaPorterillo", listaPorterillo);
-                startActivity(intent);
             }
 
         });
@@ -172,6 +160,19 @@ public class LoginAdmin extends AppCompatActivity {
                 error = e.toString();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            //LLAMO AL ACTIVITY BIENVENIDO Y LE PASO EL VALOR DE LAS VARIABLES
+            Intent intent = new Intent(getBaseContext(), BienvenidoActivity.class);
+            intent.putExtra("idUsuario", idUsuario);
+            intent.putExtra("usuario", usuario);
+            intent.putExtra("listaApertura", listaApertura);
+            intent.putExtra("listaPorterillo", listaPorterillo);
+            startActivity(intent);
         }
     }
 }
