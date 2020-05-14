@@ -1,9 +1,13 @@
 package es.futurasp.gestionlistas;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -19,9 +23,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class MainActivity extends AppCompatActivity {
-    Boolean status=false;
+    Boolean status = false;
     TextView WelcomeUser;
-    Button btnLogin;
+    Button btnLogin, btnLlamadaAtCl;
     EditText textUsuario, textPassword;
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
@@ -42,16 +46,17 @@ public class MainActivity extends AppCompatActivity {
         textPassword = (EditText) findViewById(R.id.txtPassword);
         //Boton "Entrar"
         btnLogin = (Button) findViewById(R.id.btnApertura);
+        //Boton "Llamar a atención al cliente"
+        btnLlamadaAtCl = (Button) findViewById(R.id.btnLlamadaAtCl);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String verificaUser = textUsuario.getText().toString();
 
-                if (verificaUser.isEmpty()){
+                if (verificaUser.isEmpty()) {
                     textUsuario.setError("No se introdujo ningún usuario");
-                }
-                else {
+                } else {
                     new Async().execute();
                     try {
                         Thread.sleep(500);
@@ -59,14 +64,13 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     if (status) {
-                        if (usuario.equals("admin")){
+                        if (usuario.equals("admin")) {
                             Toast.makeText(MainActivity.this, "Bienvenido admin", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(view.getContext(), LoginAdmin.class);
                             startActivity(intent);
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "Bienvenido "+usuario, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Bienvenido " + usuario, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(view.getContext(), BienvenidoActivity.class);
                             intent.putExtra("idUsuario", idUsuario);
                             intent.putExtra("usuario", usuario);
@@ -76,13 +80,31 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
 
-                    }
-                    else{
+                    } else {
                         textUsuario.setError("Usuario o contraseña incorrecta");
 
                     }
                     //Toast.makeText(MainActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnLlamadaAtCl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_CALL);
+                i.setData(Uri.parse("tel:123456789"));
+                if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                startActivity(i);
             }
         });
     }
