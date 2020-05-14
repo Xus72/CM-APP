@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -66,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
         btnLlamadaAtCl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_CALL);
-                i.setData(Uri.parse("tel:123456789"));
+
                 if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -76,9 +76,21 @@ public class MainActivity extends AppCompatActivity {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
+                    /*Intent i = new Intent(Intent.ACTION_CALL);
+                    i.setData(Uri.parse("tel:123456789"));
+                    startActivity(i);*/
+                    startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + 697205575)));
+                   /* if (ActivityCompat.shouldShowRequestPermissionRationale(,
+                           Manifest.permission.CALL_PHONE)) {
+                        Intent llamada1 = new Intent(Intent.ACTION_CALL);
+                        llamada1.setData(Uri.parse("tel:697205575"));
+                        startActivity(llamada1);
+                }*/
+
                     return;
+
                 }
-                startActivity(i);
+
             }
         });
     }
