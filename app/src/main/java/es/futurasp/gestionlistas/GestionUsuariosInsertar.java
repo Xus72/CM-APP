@@ -99,6 +99,14 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 Statement statement = connection.createStatement();
                 //Inserto usuario
                 int resultSet = statement.executeUpdate("insert into usuarios (usuario, pass, empresa, cif, listaApertura, listaPorterillo) values ('" + txtInsUsuario.getText().toString() + "', '" + txtInsPassword.getText().toString() + "', '" + txtInsPassword.getText().toString() + "','" + txtInsCif.getText().toString() + "', '" + marcadoApertura + "', '" + marcadoPorterillo + "');");
+                if (marcadoApertura=="si") {
+                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
+                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
+                }
+                /*if (marcadoPorterillo=="si") {
+                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
+                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero)));");
+                }*/
 
             } catch (Exception e) {
                 //Guardo el error
@@ -110,12 +118,12 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            System.out.println(txtInsUsuario);
+            /*System.out.println(txtInsUsuario);
             System.out.println(txtInsPassword);
             System.out.println(txtInsEmpresa);
             System.out.println(txtInsCif);
             System.out.println(marcadoApertura);
-            System.out.println(marcadoPorterillo);
+            System.out.println(marcadoPorterillo);*/
             if (error == "") {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
