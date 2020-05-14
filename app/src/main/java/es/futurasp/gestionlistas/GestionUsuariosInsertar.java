@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,7 +17,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class GestionUsuariosInsertar extends AppCompatActivity {
-    EditText txtInsUsuario, txtInsEmpresa, txtInsPassword, txtInsCif;
+    EditText txtInsUsuario;
+    EditText txtInsEmpresa;
+    EditText txtInsPassword;
+    EditText txtInsCif;
+    EditText txtInsNumViviendas;
+    int verificaNumVivienda = 0;
     CheckBox checkListaApertura, checkListaPorterillo;
     String marcadoApertura = "no";
     String marcadoPorterillo = "no";
@@ -34,8 +40,10 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
         txtInsEmpresa = (EditText) findViewById(R.id.txtInsEmpresa);
         txtInsPassword = (EditText) findViewById(R.id.txtInsPassword);
         txtInsCif = (EditText) findViewById(R.id.txtInsCif);
+        txtInsNumViviendas = (EditText) findViewById(R.id.txtInsNumViviendas);
         checkListaApertura = (CheckBox) findViewById(R.id.checkApertura);
         checkListaPorterillo = (CheckBox) findViewById(R.id.checkPorterillo);
+
 
         //ACCION BOTON VOLVER
         btnVolver.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +63,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 Integer tamPass = verificaPassword.length();
                 String verificaEmpresa = txtInsEmpresa.getText().toString();
                 String verificaCif = txtInsCif.getText().toString();
+                verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
 
 
                 if (verificaUser.isEmpty()) {
@@ -75,6 +84,9 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                     }
                     if (checkListaPorterillo.isChecked() == true) {
                             marcadoPorterillo = "si";
+                            if (verificaNumVivienda < 0 && verificaNumVivienda > 9999){
+                                txtInsNumViviendas.setError("El número debe estar entre 1 y 9999");
+                            }
                     }
                     new GestionUsuariosInsertar.insertarUsuarios().execute();
 
@@ -103,10 +115,14 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                     int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
                             " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
                 }
-                /*if (marcadoPorterillo=="si") {
-                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero)));");
-                }*/
+                if (marcadoPorterillo=="si") {
+                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + txtInsUsuario.getText().toString() +
+                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, " +
+                            "observacion3 VARCHAR(45) NULL, PRIMARY KEY (id));");
+                    for (int i = 1; i < verificaNumVivienda+1; i++){
+                        int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ txtInsUsuario.getText().toString() +" (id, puerta) values ("+i+" ,"+i+");");
+                    }
+                }
 
             } catch (Exception e) {
                 //Guardo el error
@@ -127,6 +143,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
             if (error == "") {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
+                GestionUsuariosInsertar.super.onBackPressed();
             } else {
                 System.out.println(error);
                 Toast.makeText(getApplicationContext(),
@@ -135,4 +152,12 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
             }
         }
     }
+    public void onCheckboxClicked (View view){
+        checkListaPorterillo = (CheckBox) view;
+        boolean s = checkListaPorterillo.isChecked();
+        if (s){
+            txtInsNumViviendas.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

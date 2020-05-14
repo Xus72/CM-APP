@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="220dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="330dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/button_rounded"
         android:text="Volver"
@@ -111,6 +111,7 @@
         android:layout_marginStart="180dp"
         android:layout_marginTop="8dp"
         android:text="Lista Porterillo"
+        android:onClick="onCheckboxClicked"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtInsCif" />
@@ -120,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="330dp"
         android:layout_marginEnd="220dp"
         android:background="@drawable/button_rounded"
         android:text="Guardar"
@@ -128,4 +129,19 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <EditText
+        android:id="@+id/txtInsNumViviendas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="240dp"
+        android:layout_marginEnd="60dp"
+        android:hint="Nº Viviendas"
+        android:visibility="invisible"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/btnVolver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkPorterillo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
