@@ -58,9 +58,7 @@ public class GestionUsuarios extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             //CONSULTO A LA BASE DE DATOS
-            new GestionUsuarios.datosUsuarioSeleccionadoGestion().execute();
-
-
+            new GestionUsuarios.selModificarUsuario().execute();
         }
 
     });
@@ -76,11 +74,7 @@ public class GestionUsuarios extends AppCompatActivity {
             public void onClick(View view) {
                 //CONSULTO LOS DATOS DEL USUARIO SELECCIONADO
                 new GestionUsuarios.datosUsuarioSeleccionadoGestion().execute();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 // LLAMO AL MÉTODO PARA BORRAR USUARIO PASANDOLE EL VALOR DEL USUARIO SELECCIONADO
                 Toast.makeText(getApplicationContext(),
                         "Borrando usuario seleccionado : " + itemSeleccionado, Toast.LENGTH_LONG).show();
@@ -233,6 +227,52 @@ public class GestionUsuarios extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Ops! Ha ocurrido algún error a la hora de borrar", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+    class selModificarUsuario extends AsyncTask<Void, Void, Void> {
+        String error = "";
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                //Configuracion de la conexión
+                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+
+                Statement statement = connection.createStatement();
+                //Guardo en resultSet el resultado de la consulta
+                System.out.println("Se ha seleccionado el item en la consulta:"+ itemSeleccionado);
+                ResultSet resultSet = statement.executeQuery("select * from usuarios where usuario='"+itemSeleccionado+"'");
+
+                while (resultSet.next()) {
+                    idUsuario=resultSet.getInt(1);
+                    usuario=resultSet.getString(2);
+                    pass=resultSet.getString(3);
+                    ultimaConexion=resultSet.getDate(4);
+                    empresa=resultSet.getString(5);
+                    cif=resultSet.getString(6);
+                    listaApertura=resultSet.getString(7);
+                    listaPorterillo=resultSet.getString(8);
+                }
+
+
+            } catch (Exception e) {
+                //Guardo el error
+                error = e.toString();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //LLAMO AL ACTIVITY BIENVENIDO Y LE PASO EL VALOR DE LAS VARIABLES
+            Intent intent = new Intent(getBaseContext(), GestionUsuariosModificar.class);
+            intent.putExtra("idUsuario", idUsuario);
+            intent.putExtra("usuario", usuario);
+            intent.putExtra("listaApertura", listaApertura);
+            intent.putExtra("listaPorterillo", listaPorterillo);
+            startActivity(intent);
         }
     }
 }
