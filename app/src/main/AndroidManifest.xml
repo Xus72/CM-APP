@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GestionUsuariosInsertar"></activity>
+        <activity android:name=".UsuarioListaPorterillo"></activity>
+        <activity android:name=".UsuarioListaApertura" />
+        <activity android:name=".GestionUsuariosInsertar" />
         <activity android:name=".GestionUsuariosModificar" />
         <activity android:name=".GestionUsuarios" />
         <activity android:name=".LoginAdmin" />

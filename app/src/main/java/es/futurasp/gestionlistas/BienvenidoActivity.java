@@ -15,24 +15,36 @@ public class BienvenidoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bienvenido);
 
-        Button btnListaApertura = (Button) findViewById(R.id.btnApertura);
-        Button btnListaPorterillo = (Button) findViewById(R.id.btnPorterillo);
-        TextView textoSinLista = (TextView) findViewById(R.id.textView_SinListas);
+        final Button btnListaApertura = (Button) findViewById(R.id.btnApertura);
+        final Button btnListaPorterillo = (Button) findViewById(R.id.btnPorterillo);
+        final TextView textoSinLista = (TextView) findViewById(R.id.textView_SinListas);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
 
+        final Integer idUsuario = getIntent().getIntExtra("idUsuario", 0);
+        final String usuario = getIntent().getStringExtra("usuario");
+        final String listaApertura = getIntent().getStringExtra("listaApertura");
+        final String listaPorterillo = getIntent().getStringExtra("listaPorterillo");
+
+        //BOTON VOLVER
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);*/
                 BienvenidoActivity.super.onBackPressed();
             }
 
         });
-        Integer idUsuario = getIntent().getIntExtra("idUsuario", 0);
-        String usuario = getIntent().getStringExtra("usuario");
-        String listaApertura = getIntent().getStringExtra("listaApertura");
-        String listaPorterillo = getIntent().getStringExtra("listaPorterillo");
+
+        //BOTON LISTA DE APERTURA
+        btnListaApertura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(usuario);
+                Intent intent = new Intent(getBaseContext(), UsuarioListaApertura.class);
+                intent.putExtra("usuario", usuario);
+                startActivity(intent);
+            }
+        });
+
 
 
         /*System.out.println("El id de user es: "+idUsuario);

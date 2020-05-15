@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#37474f"
-    tools:context=".GestionUsuarios">
+    tools:context=".UsuarioListaApertura">
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
@@ -15,23 +15,12 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="16dp" />
 
-    <Spinner
-        android:id="@+id/mSpinnerGestionUsuarios"
-        android:layout_width="403dp"
-        android:layout_height="53dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
     <Button
         android:id="@+id/btnInsertarUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="500dp"
         android:layout_marginEnd="280dp"
         android:background="@drawable/button_rounded"
         android:text="REGISTRAR"
@@ -46,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="500dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/button_rounded"
         android:text="MODIFICAR"
@@ -61,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="280dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="500dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_rounded"
         android:text="BORRAR"
@@ -76,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="480dp"
+        android:layout_marginTop="580dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/button_rounded"
         android:text="Volver"
@@ -91,8 +80,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="SELECCIONE USUARIO"
+        android:text="LISTA DE USUARIOS PERMITIDOS
+"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <Spinner
+        android:id="@+id/mSpinnerListaApertura"
+        android:layout_width="412dp"
+        android:layout_height="232dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnModificarUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="-1dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

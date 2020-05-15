@@ -47,7 +47,7 @@ public class GestionUsuarios extends AppCompatActivity {
     Button btnModificar = (Button) findViewById(R.id.btnModificarUsuario);
     Button btnBorrar = (Button) findViewById(R.id.btnBorrarUsuario);
     Button btnVolver = (Button) findViewById(R.id.btnVolver);
-    Button btnRegistrarUsuario = (Button) findViewById(R.id.btnRegistrarUsuario);
+    Button btnRegistrarUsuario = (Button) findViewById(R.id.btnInsertarUsuario);
 
     //ACCION BOTON VOLVER
         btnVolver.setOnClickListener(new View.OnClickListener() {
