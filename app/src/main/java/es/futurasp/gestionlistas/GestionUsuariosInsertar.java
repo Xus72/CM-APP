@@ -2,6 +2,7 @@ package es.futurasp.gestionlistas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -109,6 +110,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
+
                 //Inserto usuario
                 int resultSet = statement.executeUpdate("insert into usuarios (usuario, pass, empresa, cif, listaApertura, listaPorterillo) values ('" + txtInsUsuario.getText().toString() + "', '" + txtInsPassword.getText().toString() + "', '" + txtInsPassword.getText().toString() + "','" + txtInsCif.getText().toString() + "', '" + marcadoApertura + "', '" + marcadoPorterillo + "');");
                 if (marcadoApertura=="si") {
@@ -143,7 +145,11 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
             if (error == "") {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
-                GestionUsuariosInsertar.super.onBackPressed();
+                //GestionUsuariosInsertar.super.onBackPressed();
+
+                Intent me = getIntent();
+                setResult(100, me);
+                         finish();
             } else {
                 System.out.println(error);
                 Toast.makeText(getApplicationContext(),
@@ -152,6 +158,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
             }
         }
     }
+
     public void onCheckboxClicked (View view){
         checkListaPorterillo = (CheckBox) view;
         boolean s = checkListaPorterillo.isChecked();

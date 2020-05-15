@@ -23,9 +23,21 @@ public class GestionUsuarios extends AppCompatActivity {
     ArrayList<String> listaUsuarios = new ArrayList<String>();
     public String itemSeleccionado = null;
     Integer resBorrado = 0;
+    Integer resBorradoListaApertura = 0;
+    Integer resBorradoListaPorterillo = 0;
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
     Date ultimaConexion;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100){
+            new GestionUsuarios.ListUsuarios().execute();
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +62,7 @@ public class GestionUsuarios extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), GestionUsuariosInsertar.class);
-                startActivity(intent);
+                startActivityForResult(intent, 100);
             }
         });
         //ACCION BOTON MODIFICAR
@@ -79,10 +91,6 @@ public class GestionUsuarios extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Borrando usuario seleccionado : " + itemSeleccionado, Toast.LENGTH_LONG).show();
                 new GestionUsuarios.borrarUsuario().execute();
-
-
-
-
             }
         });
 
@@ -127,7 +135,7 @@ public class GestionUsuarios extends AppCompatActivity {
                 Statement statement = connection.createStatement();
                 //Guardo en resultSet el resultado de la consulta
                 ResultSet resultSet = statement.executeQuery("select usuario from usuarios order by usuario");
-
+                listaUsuarios.clear();
                 while (resultSet.next()) {
                     listaUsuarios.add(resultSet.getString(1));
                 }
@@ -136,6 +144,7 @@ public class GestionUsuarios extends AppCompatActivity {
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
+                System.out.println(error);
             }
             return null;
         }
@@ -200,10 +209,22 @@ public class GestionUsuarios extends AppCompatActivity {
                 Statement statement = connection.createStatement();
                 //Guardo en resultSet el resultado de la consulta
                 resBorrado = statement.executeUpdate("delete from usuarios where usuario= '"+itemSeleccionado+"'");
+                System.out.println("lista de apertura: "+listaApertura);
+                System.out.println("lista porterillo: "+listaPorterillo);
+                if (listaApertura.equals("si")){
+                    System.out.println("entro en borrar tabla lista apertura");
+                    resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_apertura_"+itemSeleccionado);
+                }
+                if (listaPorterillo.equals("si")){
+                    System.out.println("entro en borrar tabla lista porterillo");
+                    resBorradoListaPorterillo = statement.executeUpdate("DROP TABLE IF EXISTS lista_porterillo_"+itemSeleccionado);
+                }
+
 
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
+                System.out.println(error);
             }
             return null;
         }
