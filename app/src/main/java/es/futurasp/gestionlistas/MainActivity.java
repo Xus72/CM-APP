@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
     Date ultimaConexion;
+    ImageButton imageButton, imageButton2, imageButton3;
 
 
     @Override
@@ -49,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnApertura);
         //Boton "Llamar a atención al cliente"
         btnLlamadaAtCl = (Button) findViewById(R.id.btnLlamadaAtCl);
+        //Imagen Twitter
+        imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+        //Imagen Facebook
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        //Imagen web
+        imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +101,35 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri twit = Uri.parse("http://www.twitter.com/FuturaSP");
+                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
+                startActivity(intentTw);
+            }
+        });
+
+        // Cambiar por el correo electrónico
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri twit = Uri.parse("https://m.facebook.com/FuturaServiceProvider/");
+                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
+                startActivity(intentTw);
+            }
+        });
+
+        imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri twit = Uri.parse("http://www.futurasp.es/");
+                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
+                startActivity(intentTw);
+            }
+        });
+
     }
     //Clase Tarea asíncrona
     @SuppressLint("StaticFieldLeak")
