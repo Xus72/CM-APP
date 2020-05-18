@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="490dp"
         android:layout_marginEnd="280dp"
         android:background="@drawable/button_rounded"
         android:text="REGISTRAR"
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="490dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/button_rounded"
         android:text="MODIFICAR"
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="280dp"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="490dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_rounded"
         android:text="BORRAR"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="580dp"
+        android:layout_marginTop="545dp"
         android:layout_marginEnd="140dp"
         android:background="@drawable/button_rounded"
         android:text="Volver"
@@ -79,19 +79,58 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="LISTA DE USUARIOS PERMITIDOS
 "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <Spinner
-        android:id="@+id/mSpinnerListaApertura"
-        android:layout_width="412dp"
-        android:layout_height="232dp"
+
+    <LinearLayout
+        android:id="@+id/layoutTabla"
+        android:layout_width="407dp"
+        android:layout_height="253dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/btnModificarUsuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_editor_absoluteX="-1dp" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <ScrollView
+            android:id="@+id/scrollvertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scrollbars="vertical">
+
+            <HorizontalScrollView
+                android:id="@+id/scrollhorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TableLayout
+                        android:id="@+id/tabla"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"></TableLayout>
+                </LinearLayout>
+
+            </HorizontalScrollView>
+        </ScrollView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,6 +41,8 @@ public class BienvenidoActivity extends AppCompatActivity {
                 System.out.println(usuario);
                 Intent intent = new Intent(getBaseContext(), UsuarioListaApertura.class);
                 intent.putExtra("usuario", usuario);
+                intent.putExtra("listaApertura", listaApertura);
+                intent.putExtra("listaPorterillo", listaPorterillo);
                 startActivity(intent);
             }
         });

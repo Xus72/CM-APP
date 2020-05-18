@@ -2,14 +2,19 @@ package es.futurasp.gestionlistas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import java.sql.Connection;
@@ -18,13 +23,23 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class UsuarioListaApertura extends AppCompatActivity {
     String usuarioSeleccionado = null;
+    String tieneListaApertura = null;
+    String tieneListaPorterillo = null;
+    int contadorRegistros;
+    Tabla tabla;
 
-    ArrayList<String> listaAtributosUsuarios = new ArrayList<String>();
-    public String itemSeleccionadoApertura = null;
+    ArrayList<List<String>> listaAtributosUsuarios = new ArrayList<>();
+    ArrayList<String> atributosUsuarios = new ArrayList<>();
+    ArrayList<String> atributosUsuariosNumero = new ArrayList<>();
+    ArrayList<String> atributosUsuariosNombre = new ArrayList<>();
+    ArrayList<String> atributosUsuariosObs1 = new ArrayList<>();
+    ArrayList<String> atributosUsuariosObs2 = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +49,13 @@ public class UsuarioListaApertura extends AppCompatActivity {
         Button btnModificar = (Button) findViewById(R.id.btnModificarUsuario);
         Button btnBorrar = (Button) findViewById(R.id.btnBorrarUsuario);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
-        final Spinner spinnerListaApertura = (Spinner) findViewById(R.id.mSpinnerListaApertura);
+        tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
+
+
         usuarioSeleccionado = getIntent().getStringExtra("usuario");
-        //RELLENAR LA TABLA CON DATOS
-        new UsuarioListaApertura.ListarUsuariosApertura().execute();
+        tieneListaApertura = getIntent().getStringExtra("listaApertura");
+        tieneListaPorterillo = getIntent().getStringExtra("listaPorterillo");
+
 
         //ACCION BOTON VOLVER
         btnVolver.setOnClickListener(new View.OnClickListener() {
@@ -77,32 +95,14 @@ public class UsuarioListaApertura extends AppCompatActivity {
                 new UsuarioListaApertura.borrarUsuario().execute();*/
             }
         });
-        //CONFIGURACION DEL SPINNER
-        final ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, (List<String>) spinnerListaApertura);
-        adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerListaApertura.setAdapter(adaptador);
-        spinnerListaApertura.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                itemSeleccionadoApertura = adaptador.getItem(position).toString();
-                if (itemSeleccionadoApertura.isEmpty()){
-                    System.out.println("No se ha seleccionado nada");
-                }
-                else{
-                    System.out.println("Se ha seleccionado:"+ itemSeleccionadoApertura);
 
-                }
-                Toast.makeText(getApplicationContext(),
-                        "Usuario seleccionado : " + itemSeleccionadoApertura, Toast.LENGTH_LONG).show();
+        //RELLENAR LA TABLA CON DATOS
 
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
+        new UsuarioListaApertura.ListarUsuariosApertura().execute();
 
-        });
-
+        tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
+        tabla.agregarCabecera(R.array.cabecera_tabla);
 
     }
 
@@ -117,16 +117,18 @@ public class UsuarioListaApertura extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                //Guardo en resultSet el resultado de la consulta
-                ResultSet resultSet = statement.executeQuery("select * from usuarios where usuario='"+usuarioSeleccionado+"'");
+                //Guardo en resulCount el resultado de la consulta
+                ResultSet resulSet = statement.executeQuery("select * from lista_apertura_"+usuarioSeleccionado);
 
-                while (resultSet.next()) {
-                    listaAtributosUsuarios.add(resultSet.getString(0));
-                    listaAtributosUsuarios.add(resultSet.getString(1));
-                    listaAtributosUsuarios.add(resultSet.getString(2));
-                    listaAtributosUsuarios.add(resultSet.getString(3));
+                while (resulSet.next()) {
+                    atributosUsuariosNumero.add(resulSet.getString(1));
+                    atributosUsuariosNombre.add(resulSet.getString(2));
+                    atributosUsuariosObs1.add(resulSet.getString(3));
+                    atributosUsuariosObs2.add(resulSet.getString(4));
+
+                    contadorRegistros++;
+
                 }
-
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
@@ -134,5 +136,42 @@ public class UsuarioListaApertura extends AppCompatActivity {
             }
             return null;
         }
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            System.out.println(listaAtributosUsuarios.size());
+            System.out.println(atributosUsuarios.size());
+            for(int i = 0; i < atributosUsuariosNumero.size(); i++) {
+                ArrayList<String> elementos = new ArrayList<>();
+                elementos.add(atributosUsuariosNumero.get(i));
+                elementos.add(atributosUsuariosNombre.get(i));
+                elementos.add(atributosUsuariosObs1.get(i));
+                elementos.add(atributosUsuariosObs2.get(i));
+
+                tabla.agregarFilaTabla(elementos);
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.principal, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings)
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
+

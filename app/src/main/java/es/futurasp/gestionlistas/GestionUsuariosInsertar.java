@@ -64,7 +64,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 Integer tamPass = verificaPassword.length();
                 String verificaEmpresa = txtInsEmpresa.getText().toString();
                 String verificaCif = txtInsCif.getText().toString();
-                verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
+
 
 
                 if (verificaUser.isEmpty()) {
@@ -136,16 +136,9 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            /*System.out.println(txtInsUsuario);
-            System.out.println(txtInsPassword);
-            System.out.println(txtInsEmpresa);
-            System.out.println(txtInsCif);
-            System.out.println(marcadoApertura);
-            System.out.println(marcadoPorterillo);*/
             if (error == "") {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
-                //GestionUsuariosInsertar.super.onBackPressed();
 
                 Intent me = getIntent();
                 setResult(100, me);
@@ -164,6 +157,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
         boolean s = checkListaPorterillo.isChecked();
         if (s){
             txtInsNumViviendas.setVisibility(View.VISIBLE);
+            verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
         }
     }
 
