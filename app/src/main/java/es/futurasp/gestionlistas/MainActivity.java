@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
     Date ultimaConexion;
+    ImageButton imageButton, imageButton2, imageButton3;
 
 
     @Override
@@ -48,6 +51,12 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnApertura);
         //Boton "Llamar a atención al cliente"
         btnLlamadaAtCl = (Button) findViewById(R.id.btnLlamadaAtCl);
+        //Imagen Twitter
+        imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
+        //Imagen Facebook
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        //Imagen web
+        imageButton3 = (ImageButton) findViewById(R.id.imageButton3);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
         btnLlamadaAtCl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_CALL);
-                i.setData(Uri.parse("tel:123456789"));
+
                 if (ActivityCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -76,11 +84,52 @@ public class MainActivity extends AppCompatActivity {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
+                    /*Intent i = new Intent(Intent.ACTION_CALL);
+                    i.setData(Uri.parse("tel:123456789"));
+                    startActivity(i);*/
+                    startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + 697205575)));
+                   /* if (ActivityCompat.shouldShowRequestPermissionRationale(,
+                           Manifest.permission.CALL_PHONE)) {
+                        Intent llamada1 = new Intent(Intent.ACTION_CALL);
+                        llamada1.setData(Uri.parse("tel:697205575"));
+                        startActivity(llamada1);
+                }*/
+
                     return;
+
                 }
-                startActivity(i);
+
             }
         });
+
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri twit = Uri.parse("http://www.twitter.com/FuturaSP");
+                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
+                startActivity(intentTw);
+            }
+        });
+
+        // Cambiar por el correo electrónico
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri twit = Uri.parse("https://m.facebook.com/FuturaServiceProvider/");
+                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
+                startActivity(intentTw);
+            }
+        });
+
+        imageButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri twit = Uri.parse("http://www.futurasp.es/");
+                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
+                startActivity(intentTw);
+            }
+        });
+
     }
     //Clase Tarea asíncrona
     @SuppressLint("StaticFieldLeak")

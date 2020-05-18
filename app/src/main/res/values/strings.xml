@@ -1,13 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GestionListas</string>
-    <string name="title_fragment">Inicio de sesión</string>
-    <string name="title_user">Usuario: </string>
-    <string name="title_password">Contraseña: </string>
-    <string name="title_boton">ENTRAR</string>
-    <string name="title_spinner">Spinner</string>
-    <string name="title_seleccionar">Seleccionar</string>
+<string name="app_name">GestionListas</string>
+<string name="title_fragment">Inicio de sesión</string>
+<string name="title_user">Usuario: </string>
+<string name="title_password">Contraseña: </string>
+<string name="title_boton">ENTRAR</string>
+<string name="title_spinner">Spinner</string>
+<string name="title_seleccionar">Seleccionar</string>
+<string name="action_settings">Settings</string>
+    <string name="menu_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+<!-- TODO: Remove or change this placeholder text -->
+<string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
