@@ -270,6 +270,9 @@ public class GestionUsuarios extends AppCompatActivity {
             Intent intent = new Intent(getBaseContext(), GestionUsuariosModificar.class);
             intent.putExtra("idUsuario", idUsuario);
             intent.putExtra("usuario", usuario);
+            intent.putExtra("pass",pass);
+            intent.putExtra("empresa",empresa);
+            intent.putExtra("cif",cif);
             intent.putExtra("listaApertura", listaApertura);
             intent.putExtra("listaPorterillo", listaPorterillo);
             startActivity(intent);
