@@ -33,7 +33,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         empresa = (EditText) findViewById(R.id.txtInsEmpresa);
         cif = (EditText) findViewById(R.id.txtInsCif);
         apertura = (CheckBox) findViewById(R.id.checkApertura);
-        porterillo = (CheckBox) findViewById(R.id.checkApertura);
+        porterillo = (CheckBox) findViewById(R.id.checkPorterillo);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnGuardar = (Button) findViewById(R.id.btnInsGuardar);
 
@@ -78,6 +78,8 @@ public class GestionUsuariosModificar extends AppCompatActivity {
 
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
         String error = "";
+
+        @SuppressLint("WrongThread")
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -86,10 +88,28 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 //Inserto usuario
-                @SuppressLint("WrongThread")
-                String sql = "UPDATE usuarios SET pass ='"+pass.getText().toString()+"', empresa = '"+empresa.getText().toString()+"',cif = '"+cif.getText().toString()+"', listaApertura = '"+apertura+"', listaPorterillo = '"+porterillo+"' WHERE idUsuario = '"+idUser;
+
+                String sql = "UPDATE usuarios SET pass = ?, empresa = ? ,cif = ?, listaApertura = ?, listaPorterillo = ? WHERE idUsuario = ?";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setString(1,pass.getText().toString());
+                preparedStatement.setString(2,empresa.getText().toString());
+                preparedStatement.setString(3,cif.getText().toString());
+
+                if (apertura.isChecked() == false){
+                    preparedStatement.setString(4,"no");
+                }else{
+                    preparedStatement.setString(4,"si");
+                }
+                if (porterillo.isChecked() == false){
+                    preparedStatement.setString(5,"no");
+                }else{
+                    preparedStatement.setString(5,"si");
+                }
+                preparedStatement.setInt(6,idUser);
+
+                preparedStatement.executeUpdate();
 
                 /*if (apertura.isChecked() == true) {
                     int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
