@@ -61,7 +61,7 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
         btnInsertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), UsuarioListaAperturaInsertar.class);
+                Intent intent = new Intent(view.getContext(), UsuarioListaPorterilloInsertar.class);
                 intent.putExtra("usuario", usuarioSeleccionado);
                 startActivityForResult(intent, 100);
 
@@ -108,7 +108,7 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
 
                 Statement statement = connection.createStatement();
                 //Guardo en resulCount el resultado de la consulta
-                ResultSet resulSet = statement.executeQuery("select * from lista_porterillo_"+usuarioSeleccionado+ " order by puerta asc");
+                ResultSet resulSet = statement.executeQuery("select puerta, numero1, numero2, numero3, observaciones from lista_porterillo_"+usuarioSeleccionado+ " order by puerta asc");
 
                 while (resulSet.next()) {
                     atributosUsuariosPuerta.add(resulSet.getString(1));

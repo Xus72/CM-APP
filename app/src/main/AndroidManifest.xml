@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".UsuarioListaPorterillo"></activity>
+        <activity android:name=".UsuarioListaPorterilloInsertar"></activity>
         <activity android:name=".UsuarioListaApertura" />
         <activity android:name="UsuarioListaAperturaInsertar" />
         <activity android:name="UsuarioListaAperturaBorrar" />

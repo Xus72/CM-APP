@@ -121,7 +121,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 if (marcadoPorterillo=="si") {
                     verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
                     int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + txtInsUsuario.getText().toString() +
-                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 VARCHAR(45) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
+                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
                     for (int i = 1; i < verificaNumVivienda+1; i++){
                         int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ txtInsUsuario.getText().toString() +" (id, puerta) values ("+i+" ,"+i+");");
                     }
