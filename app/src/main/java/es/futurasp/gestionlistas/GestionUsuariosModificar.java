@@ -23,7 +23,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
     EditText pass, empresa, cif;
     CheckBox apertura, porterillo;
     Integer idUser;
-
+    String user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +52,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         });
 
         idUser = getIntent().getIntExtra("idUsuario",0);
-        String user = getIntent().getStringExtra("usuario");
+        user = getIntent().getStringExtra("usuario");
         String contraseña = getIntent().getStringExtra("pass");
         String enterprise = getIntent().getStringExtra("empresa");
         String cifUser = getIntent().getStringExtra("cif");
@@ -63,17 +63,20 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         pass.setText(contraseña);
         empresa.setText(enterprise);
         cif.setText(cifUser);
-        if (listaApertura == "no"){
+        if (listaApertura.equals("no")){
             apertura.setChecked(false);
         }else{
             apertura.setChecked(true);
         }
-        if (listaPorterillo == "no"){
+        if (listaPorterillo.equals("si")){
             porterillo.setChecked(false);
         }else{
             porterillo.setChecked(true);
         }
 
+        boolean aper = apertura.isChecked();
+        boolean port = porterillo.isChecked();
+        System.out.println(aper+" "+port);
     }
 
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
@@ -88,7 +91,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 //Inserto usuario
-
+                Statement statement = connection.createStatement();
                 String sql = "UPDATE usuarios SET pass = ?, empresa = ? ,cif = ?, listaApertura = ?, listaPorterillo = ? WHERE idUsuario = ?";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -111,14 +114,13 @@ public class GestionUsuariosModificar extends AppCompatActivity {
 
                 preparedStatement.executeUpdate();
 
-                /*if (apertura.isChecked() == true) {
-                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
-                }*/
-                /*if (marcadoPorterillo=="si") {
-                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero)));");
-                }*/
+                if (apertura.isChecked() == false) {
+                    int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_apertura_"+user);
+                }
+
+                if (porterillo.isChecked() == false) {
+                    int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_porterillo_"+user);
+                }
 
             } catch (Exception e) {
                 //Guardo el error
