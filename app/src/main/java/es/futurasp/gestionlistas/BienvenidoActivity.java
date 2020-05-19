@@ -46,13 +46,19 @@ public class BienvenidoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //BOTON LISTA PORTERILLO
+        btnListaPorterillo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(usuario);
+                Intent intent = new Intent(getBaseContext(), UsuarioListaPorterillo.class);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("listaApertura", listaApertura);
+                intent.putExtra("listaPorterillo", listaPorterillo);
+                startActivity(intent);
+            }
+        });
 
-
-
-        /*System.out.println("El id de user es: "+idUsuario);
-        System.out.println("El usuario es: "+usuario);
-        System.out.println("listaApertura: "+listaApertura);
-        System.out.println("listaPorterillo: "+listaPorterillo);*/
 
         if (listaApertura.equals("si")){
             btnListaApertura.setVisibility(View.VISIBLE);

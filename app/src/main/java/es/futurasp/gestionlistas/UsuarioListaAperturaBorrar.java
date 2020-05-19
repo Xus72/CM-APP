@@ -71,7 +71,7 @@ public class UsuarioListaAperturaBorrar extends AppCompatActivity {
                 System.out.println("El numero es: "+numero);
                 int resultSet = statement.executeUpdate("delete from lista_apertura_"+usuario+" where numero = "+numero);
                 System.out.println(resultSet);
-                
+
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();

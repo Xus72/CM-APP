@@ -2,6 +2,7 @@ package es.futurasp.gestionlistas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -66,7 +67,6 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 String verificaCif = txtInsCif.getText().toString();
 
 
-
                 if (verificaUser.isEmpty()) {
                     txtInsUsuario.setError("No se introdujo ninguna usuario");
                 } else if (verificaPassword.isEmpty()) {
@@ -102,6 +102,7 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
     class insertarUsuarios extends AsyncTask<Void, Void, Void> {
         String error = "";
 
+        @SuppressLint("WrongThread")
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -118,9 +119,9 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                             " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
                 }
                 if (marcadoPorterillo=="si") {
+                    verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
                     int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + txtInsUsuario.getText().toString() +
-                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, " +
-                            "observacion3 VARCHAR(45) NULL, PRIMARY KEY (id));");
+                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 VARCHAR(45) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
                     for (int i = 1; i < verificaNumVivienda+1; i++){
                         int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ txtInsUsuario.getText().toString() +" (id, puerta) values ("+i+" ,"+i+");");
                     }
@@ -157,7 +158,6 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
         boolean s = checkListaPorterillo.isChecked();
         if (s){
             txtInsNumViviendas.setVisibility(View.VISIBLE);
-            verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
         }
     }
 

@@ -7,4 +7,11 @@
         <item>Observacion 1</item>
         <item>Observacion 2</item>
     </string-array>
+    <string-array name="cabecera_tabla_porterillo">
+        <item>Puerta</item>
+        <item>Numero 1</item>
+        <item>Numero 2</item>
+        <item>Numero 3</item>
+        <item>Observaciones</item>
+    </string-array>
 </resources>
