@@ -23,7 +23,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
     EditText pass, empresa, cif;
     CheckBox apertura, porterillo;
     Integer idUser;
-
+    String user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         empresa = (EditText) findViewById(R.id.txtInsEmpresa);
         cif = (EditText) findViewById(R.id.txtInsCif);
         apertura = (CheckBox) findViewById(R.id.checkApertura);
-        porterillo = (CheckBox) findViewById(R.id.checkApertura);
+        porterillo = (CheckBox) findViewById(R.id.checkPorterillo);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnGuardar = (Button) findViewById(R.id.btnInsGuardar);
 
@@ -52,7 +52,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         });
 
         idUser = getIntent().getIntExtra("idUsuario",0);
-        String user = getIntent().getStringExtra("usuario");
+        user = getIntent().getStringExtra("usuario");
         String contraseña = getIntent().getStringExtra("pass");
         String enterprise = getIntent().getStringExtra("empresa");
         String cifUser = getIntent().getStringExtra("cif");
@@ -63,21 +63,26 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         pass.setText(contraseña);
         empresa.setText(enterprise);
         cif.setText(cifUser);
-        if (listaApertura == "no"){
+        if (listaApertura.equals("no")){
             apertura.setChecked(false);
         }else{
             apertura.setChecked(true);
         }
-        if (listaPorterillo == "no"){
+        if (listaPorterillo.equals("si")){
             porterillo.setChecked(false);
         }else{
             porterillo.setChecked(true);
         }
 
+        boolean aper = apertura.isChecked();
+        boolean port = porterillo.isChecked();
+        System.out.println(aper+" "+port);
     }
 
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
         String error = "";
+
+        @SuppressLint("WrongThread")
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -86,19 +91,36 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 //Inserto usuario
-                @SuppressLint("WrongThread")
-                String sql = "UPDATE usuarios SET pass ='"+pass.getText().toString()+"', empresa = '"+empresa.getText().toString()+"',cif = '"+cif.getText().toString()+"', listaApertura = '"+apertura+"', listaPorterillo = '"+porterillo+"' WHERE idUsuario = '"+idUser;
+                Statement statement = connection.createStatement();
+                String sql = "UPDATE usuarios SET pass = ?, empresa = ? ,cif = ?, listaApertura = ?, listaPorterillo = ? WHERE idUsuario = ?";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-                /*if (apertura.isChecked() == true) {
-                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
-                }*/
-                /*if (marcadoPorterillo=="si") {
-                    int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero)));");
-                }*/
+                preparedStatement.setString(1,pass.getText().toString());
+                preparedStatement.setString(2,empresa.getText().toString());
+                preparedStatement.setString(3,cif.getText().toString());
+
+                if (apertura.isChecked() == false){
+                    preparedStatement.setString(4,"no");
+                }else{
+                    preparedStatement.setString(4,"si");
+                }
+                if (porterillo.isChecked() == false){
+                    preparedStatement.setString(5,"no");
+                }else{
+                    preparedStatement.setString(5,"si");
+                }
+                preparedStatement.setInt(6,idUser);
+
+                preparedStatement.executeUpdate();
+
+                if (apertura.isChecked() == false) {
+                    int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_apertura_"+user);
+                }
+
+                if (porterillo.isChecked() == false) {
+                    int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_porterillo_"+user);
+                }
 
             } catch (Exception e) {
                 //Guardo el error
