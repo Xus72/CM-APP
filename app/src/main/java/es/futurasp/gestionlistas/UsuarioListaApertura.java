@@ -67,8 +67,10 @@ public class UsuarioListaApertura extends AppCompatActivity {
         btnInsertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), GestionUsuariosInsertar.class);
+                Intent intent = new Intent(view.getContext(), UsuarioListaAperturaInsertar.class);
+                intent.putExtra("usuario", usuarioSeleccionado);
                 startActivityForResult(intent, 100);
+
             }
         });
         //ACCION BOTON MODIFICAR
@@ -81,24 +83,18 @@ public class UsuarioListaApertura extends AppCompatActivity {
 
         });
 
-
         //ACCION BOTON BORRAR
         btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CONSULTO LOS DATOS DEL USUARIO SELECCIONADO
-              //  new UsuarioListaApertura.datosUsuarioSeleccionadoGestion().execute();
+                Intent intent = new Intent(view.getContext(), UsuarioListaAperturaBorrar.class);
+                intent.putExtra("usuario", usuarioSeleccionado);
+                startActivityForResult(intent, 100);
 
-                // LLAMO AL MÉTODO PARA BORRAR USUARIO PASANDOLE EL VALOR DEL USUARIO SELECCIONADO
-            /*    Toast.makeText(getApplicationContext(),
-                        "Borrando usuario seleccionado : " + itemSeleccionado, Toast.LENGTH_LONG).show();
-                new UsuarioListaApertura.borrarUsuario().execute();*/
             }
         });
 
         //RELLENAR LA TABLA CON DATOS
-
-
         new UsuarioListaApertura.ListarUsuariosApertura().execute();
 
         tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
@@ -118,7 +114,7 @@ public class UsuarioListaApertura extends AppCompatActivity {
 
                 Statement statement = connection.createStatement();
                 //Guardo en resulCount el resultado de la consulta
-                ResultSet resulSet = statement.executeQuery("select * from lista_apertura_"+usuarioSeleccionado);
+                ResultSet resulSet = statement.executeQuery("select * from lista_apertura_"+usuarioSeleccionado+ " order by nombre asc");
 
                 while (resulSet.next()) {
                     atributosUsuariosNumero.add(resulSet.getString(1));

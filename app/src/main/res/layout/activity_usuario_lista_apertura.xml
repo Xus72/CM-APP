@@ -23,7 +23,8 @@
         android:layout_marginTop="490dp"
         android:layout_marginEnd="280dp"
         android:background="@drawable/button_rounded"
-        android:text="REGISTRAR"
+        android:text="INSERTAR
+"
         android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/btnModificarUsuario"
         app:layout_constraintHorizontal_bias="0.0"

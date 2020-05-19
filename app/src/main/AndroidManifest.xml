@@ -14,6 +14,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".UsuarioListaPorterillo"></activity>
         <activity android:name=".UsuarioListaApertura" />
+        <activity android:name="UsuarioListaAperturaInsertar" />
+        <activity android:name="UsuarioListaAperturaBorrar" />
         <activity android:name=".GestionUsuariosInsertar" />
         <activity android:name=".GestionUsuariosModificar" />
         <activity android:name=".GestionUsuarios" />
