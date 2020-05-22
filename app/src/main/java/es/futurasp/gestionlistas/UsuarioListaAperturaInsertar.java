@@ -1,5 +1,6 @@
 package es.futurasp.gestionlistas;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,6 +69,15 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
 
     class insertarUsuarios extends AsyncTask<Void, Void, Void> {
         String error = "";
+        String sql = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            sql = "insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2) " +
+                    "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() + "');";
+        }
+
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -79,8 +89,10 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
                 Statement statement = connection.createStatement();
 
                 //Inserto usuario
-                int resultSet = statement.executeUpdate("insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2) " +
-                        "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() + "');");
+                //@SuppressLint("WrongThread")
+                /*int resultSet = statement.executeUpdate("insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2) " +
+                        "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() + "');");*/
+                int resultSet = statement.executeUpdate(sql);
 
                 Intent me = getIntent();
                 setResult(100, me);

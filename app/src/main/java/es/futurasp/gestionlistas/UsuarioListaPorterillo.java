@@ -92,12 +92,18 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
         new UsuarioListaPorterillo.ListarUsuariosApertura().execute();
 
         tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
-        tabla.agregarCabecera(R.array.cabecera_tabla_porterillo);
+
 
     }
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100){
+            new UsuarioListaPorterillo.ListarUsuariosApertura().execute();
+        }
+    }
     class ListarUsuariosApertura extends AsyncTask<Void, Void, Void> {
         String error = "";
+
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -109,6 +115,12 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
                 Statement statement = connection.createStatement();
                 //Guardo en resulCount el resultado de la consulta
                 ResultSet resulSet = statement.executeQuery("select puerta, numero1, numero2, numero3, observaciones from lista_porterillo_"+usuarioSeleccionado+ " order by puerta asc");
+
+                atributosUsuariosPuerta.clear();
+                atributosUsuariosNumero1.clear();
+                atributosUsuariosNumero2.clear();
+                atributosUsuariosNumero3.clear();
+                atributosUsuariosObs.clear();
 
                 while (resulSet.next()) {
                     atributosUsuariosPuerta.add(resulSet.getString(1));
@@ -130,8 +142,8 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            System.out.println(listaAtributosUsuarios.size());
-            System.out.println(atributosUsuarios.size());
+            tabla.limpiar();
+            tabla.agregarCabecera(R.array.cabecera_tabla_porterillo);
             for(int i = 0; i < atributosUsuariosPuerta.size(); i++) {
                 ArrayList<String> elementos = new ArrayList<>();
                 elementos.add(atributosUsuariosPuerta.get(i));

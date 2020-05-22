@@ -50,9 +50,10 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 puerta = Integer.parseInt(txtPuerta.getText().toString());
-                numero1String = (txtNumero1.getText().toString());
-                numero2String = (txtNumero2.getText().toString());
-                numero3String = (txtNumero3.getText().toString());
+                numero1String = txtNumero1.getText().toString();
+                numero2String = txtNumero2.getText().toString();
+                numero3String = txtNumero3.getText().toString();
+                observaciones = txtObs.getText().toString();
                 //HAGO EL PARSEO A INT
                 if (!numero1String.isEmpty()){
                     numero1 =Integer.parseInt(txtNumero1.getText().toString());
@@ -60,24 +61,26 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
                 }
                 if (!numero2String.isEmpty()){
                     numero2 =Integer.parseInt(txtNumero2.getText().toString());
+                    System.out.println(numero2);
                 }
                 if (!numero3String.isEmpty()){
                     numero3 =Integer.parseInt(txtNumero3.getText().toString());
+                    System.out.println(numero3);
                 }
                 if (numero1==0){
-                    txtPuerta.setError("Debe introducir un número de puerta");
+                    txtNumero1.setError("Debe introducir un número de puerta");
                 }
                 if (numero1==0 && numero2==0 && numero3==0 ){
-                    txtPuerta.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
                 }
                 else if (numero1==0 && numero2!=0 && numero3!=0 ){
-                    txtPuerta.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
                 }
                 else if (numero1==0 && numero2!=0 && numero3==0 ){
-                    txtPuerta.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
                 }
                 else if (numero1==0 && numero2==0 && numero3!=0 ){
-                    txtPuerta.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
                 }
                 else{
                     new insertarUsuarios().execute();
@@ -88,8 +91,20 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
 
     class insertarUsuarios extends AsyncTask<Void, Void, Void> {
         String error = "";
+        String sql_nnn="", sql_nnx="", sql_xnn="", sql_xxn="", sql_xnx="", sql_xxx="", sql_echo="";
 
-        @SuppressLint("WrongThread")
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            sql_nnn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null' where puerta=" + puerta+";";
+            sql_nnx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null' where puerta=" + puerta+";";;
+            sql_xnn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3=null, observaciones='null' where puerta=" + puerta+";";;
+            sql_xxn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3="+numero3+", observaciones='null' where puerta=" + puerta+";";;
+            sql_xnx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3=null, observaciones='"+observaciones+"' where puerta=" + puerta+";";;
+            sql_xxx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3="+numero3+", observaciones='"+observaciones+"' where puerta=" + puerta+";";;
+
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -102,30 +117,38 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
 
                 //Inserto usuario
 
-/*                System.out.println("la sentencia mysql es: update lista_porterillo_"+usuario+" set numero1="+ Integer.parseInt(txtNumero1.getText().toString()) +
+               /* System.out.println("la sentencia mysql es: update lista_porterillo_"+usuario+" set numero1="+ Integer.parseInt(txtNumero1.getText().toString()) +
                         ", numero2=" + Integer.parseInt(txtNumero2.getText().toString()) + " , numero3=" + Integer.parseInt(txtNumero3.getText().toString()) + ", observaciones='" + txtObs.getText().toString() + "' where puerta="+Integer.parseInt(txtPuerta.getText().toString()));*/
                 if (numero2==0 && numero3==0 && observaciones==null) {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null' where puerta=" + puerta);
+                    int resultSet = statement.executeUpdate(sql_nnn);
+                    System.out.println("ejecutado sql_nnn");
+                    System.out.println(sql_nnn);
                 }
                 if (numero2==0  && numero3==0 && observaciones!=null) {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='"+observaciones+"' where puerta=" + puerta);
+                    int resultSet = statement.executeUpdate(sql_nnx);
+                    System.out.println("ejecutado sql_nnx");
+                    System.out.println(sql_nnx);
                 }
                 if (numero2!=0  && numero3==0 && observaciones==null) {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2='"+numero2+"' , numero3=null, observaciones='null' where puerta=" + puerta);
+                    int resultSet = statement.executeUpdate(sql_xnn);
+                    System.out.println("ejecutado sql_xnn");
+                    System.out.println(sql_xnn);
                 }
                 if (numero2!=0  && numero3==0 && observaciones!=null) {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2='"+numero2+"' , numero3=null, observaciones='"+observaciones+"' where puerta=" + puerta);
+                    int resultSet = statement.executeUpdate(sql_xnx);
+                    System.out.println("ejecutado sql_xnx");
+                    System.out.println(sql_xnx);
                 }
                 if (numero2!=0  && numero3!=0 && observaciones==null) {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2='"+numero2+"' , numero3='"+numero3+"', observaciones='null' where puerta=" + puerta);
+                    int resultSet = statement.executeUpdate(sql_xxn);
+                    System.out.println("ejecutado sql_xxn");
+                    System.out.println(sql_xxn);
                 }
                 if (numero2!=0  && numero3!=0 && observaciones!=null) {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2='"+numero2+"' , numero3='"+numero3+"', observaciones='"+observaciones+"' where puerta=" + puerta);
+                    int resultSet = statement.executeUpdate(sql_xxx);
+                    System.out.println("ejecutado sql_xxx");
+                    System.out.println(sql_xxx);
                 }
-                else {
-                    int resultSet = statement.executeUpdate("update lista_porterillo_" + usuario + " set numero1=null, numero2=null , numero3=null, observaciones='null' where puerta=" + puerta);
-                }
-
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
@@ -133,12 +156,17 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
             return null;
         }
 
+
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (error == "") {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
+                Intent me = getIntent();
+                setResult(100, me);
+                finish();
 
             } else {
                 System.out.println(error);
@@ -146,9 +174,7 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
                         "Ups!, hubo un problema al insertar el usuario", Toast.LENGTH_LONG).show();
 
             }
-            Intent me = getIntent();
-            setResult(100, me);
-            finish();
+
         }
     }
 

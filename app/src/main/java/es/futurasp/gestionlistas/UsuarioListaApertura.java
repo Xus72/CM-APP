@@ -49,7 +49,7 @@ public class UsuarioListaApertura extends AppCompatActivity {
         Button btnModificar = (Button) findViewById(R.id.btnModificarUsuario);
         Button btnBorrar = (Button) findViewById(R.id.btnBorrarUsuario);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
-        tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
+        //tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
 
 
         usuarioSeleccionado = getIntent().getStringExtra("usuario");
@@ -73,6 +73,7 @@ public class UsuarioListaApertura extends AppCompatActivity {
 
             }
         });
+
         //ACCION BOTON MODIFICAR
         btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,12 +96,22 @@ public class UsuarioListaApertura extends AppCompatActivity {
         });
 
         //RELLENAR LA TABLA CON DATOS
+
         new UsuarioListaApertura.ListarUsuariosApertura().execute();
 
         tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
-        tabla.agregarCabecera(R.array.cabecera_tabla);
+        //tabla.agregarCabecera(R.array.cabecera_tabla);
 
     }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100){
+            new UsuarioListaApertura.ListarUsuariosApertura().execute();
+            }
+    }
+
 
     class ListarUsuariosApertura extends AsyncTask<Void, Void, Void> {
         String error = "";
@@ -115,7 +126,10 @@ public class UsuarioListaApertura extends AppCompatActivity {
                 Statement statement = connection.createStatement();
                 //Guardo en resulCount el resultado de la consulta
                 ResultSet resulSet = statement.executeQuery("select * from lista_apertura_"+usuarioSeleccionado+ " order by nombre asc");
-
+                atributosUsuariosNumero.clear();
+                atributosUsuariosNombre.clear();
+                atributosUsuariosObs1.clear();
+                atributosUsuariosObs2.clear();
                 while (resulSet.next()) {
                     atributosUsuariosNumero.add(resulSet.getString(1));
                     atributosUsuariosNombre.add(resulSet.getString(2));
@@ -135,8 +149,8 @@ public class UsuarioListaApertura extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            System.out.println(listaAtributosUsuarios.size());
-            System.out.println(atributosUsuarios.size());
+            tabla.limpiar();
+            tabla.agregarCabecera(R.array.cabecera_tabla);
             for(int i = 0; i < atributosUsuariosNumero.size(); i++) {
                 ArrayList<String> elementos = new ArrayList<>();
                 elementos.add(atributosUsuariosNumero.get(i));
