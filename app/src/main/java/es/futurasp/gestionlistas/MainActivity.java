@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,12 +28,12 @@ import java.sql.Statement;
 public class MainActivity extends AppCompatActivity {
     Boolean status = false;
     TextView WelcomeUser;
-    Button btnLogin, btnLlamadaAtCl;
+    Button btnLogin;
     EditText textUsuario, textPassword;
     Integer idUsuario;
     String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
     Date ultimaConexion;
-    ImageButton imageButton, imageButton2, imageButton3;
+    ImageButton imageButton, imageButton2, imageButton3, btnLlamadaAtCl;
 
 
     @Override
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //Boton "Entrar"
         btnLogin = (Button) findViewById(R.id.btnApertura);
         //Boton "Llamar a atención al cliente"
-        btnLlamadaAtCl = (Button) findViewById(R.id.btnLlamadaAtCl);
+        btnLlamadaAtCl = (ImageButton) findViewById(R.id.btnLlamadaAtCl);
         //Imagen Twitter
         imageButton2 = (ImageButton) findViewById(R.id.imageButton2);
         //Imagen Facebook
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri twit = Uri.parse("https://m.facebook.com/FuturaServiceProvider/");
+                Uri twit = Uri.parse("mailto:facebook@futurasp.es");
                 Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
                 startActivity(intentTw);
             }
