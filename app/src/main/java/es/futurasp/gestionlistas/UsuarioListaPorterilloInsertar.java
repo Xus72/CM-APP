@@ -116,9 +116,6 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
                 Statement statement = connection.createStatement();
 
                 //Inserto usuario
-
-               /* System.out.println("la sentencia mysql es: update lista_porterillo_"+usuario+" set numero1="+ Integer.parseInt(txtNumero1.getText().toString()) +
-                        ", numero2=" + Integer.parseInt(txtNumero2.getText().toString()) + " , numero3=" + Integer.parseInt(txtNumero3.getText().toString()) + ", observaciones='" + txtObs.getText().toString() + "' where puerta="+Integer.parseInt(txtPuerta.getText().toString()));*/
                 if (numero2==0 && numero3==0 && observaciones==null) {
                     int resultSet = statement.executeUpdate(sql_nnn);
                     System.out.println("ejecutado sql_nnn");

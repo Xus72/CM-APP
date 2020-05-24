@@ -81,7 +81,7 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
         btnBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), UsuarioListaAperturaBorrar.class);
+                Intent intent = new Intent(view.getContext(), UsuarioListaPorterilloBorrar.class);
                 intent.putExtra("usuario", usuarioSeleccionado);
                 startActivityForResult(intent, 100);
 
