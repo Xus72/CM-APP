@@ -57,9 +57,9 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
                 if (verificaNumero.isEmpty()) {
                     txtNumero.setError("No se introdujo ningún número");
                 }
-                else if (verificaNumero.matches("[0-9]+")){
+                /*if (verificaNumero.matches("[0-9]*")){
                     txtNumero.setError("Debe introducir sólo números");
-                }
+                }*/
                 new insertarUsuarios().execute();
 
             }
