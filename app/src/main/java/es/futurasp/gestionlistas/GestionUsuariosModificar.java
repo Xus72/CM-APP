@@ -3,6 +3,7 @@ package es.futurasp.gestionlistas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +17,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Date;
 
 public class GestionUsuariosModificar extends AppCompatActivity {
 
@@ -47,6 +47,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 new modificarUsuario().execute();
             }
         });
@@ -63,22 +64,45 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         pass.setText(contraseña);
         empresa.setText(enterprise);
         cif.setText(cifUser);
-        if (listaApertura.equals("no")){
-            apertura.setChecked(false);
-        }else{
-            apertura.setChecked(true);
-        }
-        if (listaPorterillo.equals("si")){
-            porterillo.setChecked(false);
-        }else{
-            porterillo.setChecked(true);
-        }
-
-        boolean aper = apertura.isChecked();
-        boolean port = porterillo.isChecked();
-        System.out.println(aper+" "+port);
     }
+    class consultarListaApertura extends  AsyncTask<Void,Void,Void>{
+        String error = "";
+        String numero, nombre, observacion1, observacion2;
+        @Override
+        protected Void doInBackground(Void... voids) {
 
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura"+user+" ORDER BY nombre");
+
+                while(resultSet.next()){
+                    numero = resultSet.getString(1);
+                    nombre = resultSet.getString(2);
+                    observacion1 = resultSet.getString(3);
+                    observacion2 = resultSet.getString(4);
+                }
+
+            } catch (Exception e) {
+                error.toString();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent intent = new Intent(getBaseContext(), GestionListaApertura.class);
+            intent.putExtra("user",user);
+            intent.putExtra("numero", numero);
+            intent.putExtra("observacion1",observacion1);
+            intent.putExtra("nombre",nombre);
+            intent.putExtra("observacion2",observacion2);
+            startActivity(intent);
+        }
+    }
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
         String error = "";
 
@@ -114,13 +138,19 @@ public class GestionUsuariosModificar extends AppCompatActivity {
 
                 preparedStatement.executeUpdate();
 
-                if (apertura.isChecked() == false) {
+                /*if (apertura.isChecked() == false) {
                     int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_apertura_"+user);
+                }else{
+                    int resultCreate = statement.executeUpdate("CREATE TABLE IF NOT EXISTS lista_apertura_" +user +
+                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
                 }
 
                 if (porterillo.isChecked() == false) {
                     int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_porterillo_"+user);
-                }
+                }else{
+                    int resultCreate = statement.executeUpdate("CREATE TABLE IF NOT EXISTS lista_porterillo_" + user +
+                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
+                }*/
 
             } catch (Exception e) {
                 //Guardo el error
@@ -145,7 +175,11 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         }
     }
 
-    public void onCheckboxClicked(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
+    public void onCheckboxClicked (View view){
+        apertura = (CheckBox) view;
+        boolean check = apertura.isChecked();
+        if (check){
+            new consultarListaApertura().execute();
+        }
     }
 }
