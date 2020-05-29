@@ -60,7 +60,7 @@ public class GestionListaApertura extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+user+" ORDER BY nombre");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_prueba1 ORDER BY nombre");
 
                 while(resultSet.next()){
                     numeros.add(resultSet.getString(1));
@@ -70,7 +70,7 @@ public class GestionListaApertura extends AppCompatActivity {
                 }
 
             } catch (Exception e) {
-                error.toString();
+                error = e.toString();
             }
             return null;
         }
