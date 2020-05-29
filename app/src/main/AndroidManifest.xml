@@ -19,6 +19,7 @@
         <activity android:name=".UsuarioListaApertura" />
         <activity android:name=".UsuarioListaAperturaInsertar" />
         <activity android:name=".UsuarioListaAperturaBorrar" />
+        <activity android:name=".UsuarioListaAperturaModificar" />
         <activity android:name=".GestionUsuariosInsertar" />
         <activity android:name=".GestionUsuariosModificar" />
         <activity android:name=".GestionUsuarios" />

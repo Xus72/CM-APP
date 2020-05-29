@@ -87,6 +87,7 @@ public class GestionListaApertura extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), UsuarioListaAperturaModificar.class);
                     intent.putExtra("sel",sel);
                     intent.putExtra("user",user);
+                    startActivity(intent);
                 }
             });
         }
