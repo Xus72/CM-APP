@@ -141,8 +141,8 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
 
-                Intent me = getIntent();
-                setResult(100, me);
+                Intent intent = getIntent();
+                setResult(100, intent);
                          finish();
             } else {
                 System.out.println(error);

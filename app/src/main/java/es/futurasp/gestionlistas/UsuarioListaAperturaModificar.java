@@ -1,5 +1,6 @@
 package es.futurasp.gestionlistas;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -57,7 +58,7 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
 
                 Statement statement = connection.createStatement();
 
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_'"+usuario+"' WHERE nombre ='"+nombreLista+"'");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+usuario+" WHERE nombre ='"+nombreLista+"'");
 
                 while(resultSet.next()){
                     num = resultSet.getString(1);
@@ -114,11 +115,12 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (error == ""){
-                System.out.println(txtNumero.getText().toString() + " " + txtNombre.getText().toString() + " " + txtObs1.getText().toString() + " " + txtObs2.getText().toString()+" "+nombreLista);
                 Toast.makeText(getApplicationContext(),"Lista modificada correctamente",Toast.LENGTH_LONG).show();
-            }else{
-                System.out.println(error);
 
+                Intent me = getIntent();
+                setResult(100, me);
+                finish();
+            }else{
                 Toast.makeText(getApplicationContext(), "Se ha producido un error",Toast.LENGTH_LONG).show();
             }
         }

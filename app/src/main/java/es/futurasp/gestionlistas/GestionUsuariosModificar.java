@@ -36,21 +36,8 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         porterillo = (CheckBox) findViewById(R.id.checkPorterillo);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnGuardar = (Button) findViewById(R.id.btnInsGuardar);
-
-        btnVolver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GestionUsuariosModificar.super.onBackPressed();
-            }
-        });
-
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new modificarUsuario().execute();
-            }
-        });
+        Button btnApertura = (Button) findViewById(R.id.btnListaApertura);
+        Button btnPorterillo = (Button) findViewById(R.id.btnListaPorterillo);
 
         idUser = getIntent().getIntExtra("idUsuario",0);
         user = getIntent().getStringExtra("usuario");
@@ -64,6 +51,29 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         pass.setText(contraseña);
         empresa.setText(enterprise);
         cif.setText(cifUser);
+
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GestionUsuariosModificar.super.onBackPressed();
+            }
+        });
+
+
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new modificarUsuario().execute();
+            }
+        });
+
+        btnApertura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new consultarListaApertura().execute();
+            }
+        });
     }
     class consultarListaApertura extends  AsyncTask<Void,Void,Void>{
         String error = "";
@@ -124,33 +134,8 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 preparedStatement.setString(2,empresa.getText().toString());
                 preparedStatement.setString(3,cif.getText().toString());
 
-                if (apertura.isChecked() == false){
-                    preparedStatement.setString(4,"no");
-                }else{
-                    preparedStatement.setString(4,"si");
-                }
-                if (porterillo.isChecked() == false){
-                    preparedStatement.setString(5,"no");
-                }else{
-                    preparedStatement.setString(5,"si");
-                }
-                preparedStatement.setInt(6,idUser);
-
                 preparedStatement.executeUpdate();
 
-                /*if (apertura.isChecked() == false) {
-                    int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_apertura_"+user);
-                }else{
-                    int resultCreate = statement.executeUpdate("CREATE TABLE IF NOT EXISTS lista_apertura_" +user +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
-                }
-
-                if (porterillo.isChecked() == false) {
-                    int resBorradoListaApertura = statement.executeUpdate("DROP TABLE IF EXISTS lista_porterillo_"+user);
-                }else{
-                    int resultCreate = statement.executeUpdate("CREATE TABLE IF NOT EXISTS lista_porterillo_" + user +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
-                }*/
 
             } catch (Exception e) {
                 //Guardo el error
@@ -172,14 +157,6 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                         "Ups!, hubo un problema al insertar el usuario", Toast.LENGTH_LONG).show();
 
             }
-        }
-    }
-
-    public void onCheckboxClicked (View view){
-        apertura = (CheckBox) view;
-        boolean check = apertura.isChecked();
-        if (check){
-            new consultarListaApertura().execute();
         }
     }
 }
