@@ -5,7 +5,7 @@
     android:id="@+id/escenario"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#37474f"
+    android:background="#ffffff"
     tools:context=".Login">
 
  <!-- <Button
@@ -45,7 +45,7 @@
      android:layout_marginStart="32dp"
      android:layout_marginTop="32dp"
      android:layout_marginEnd="32dp"
-     android:backgroundTint="#26A69A"
+     android:backgroundTint="#1f76ab"
      android:ems="10"
      android:hint="Usuario"
      android:inputType="textPersonName"
@@ -63,6 +63,7 @@
      android:layout_marginEnd="32dp"
      android:ems="10"
      android:hint="Contraseña"
+     android:backgroundTint="#1f76ab"
      android:inputType="textPassword"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
@@ -87,6 +88,8 @@
      android:layout_marginEnd="32dp"
      android:background="@drawable/button_rounded"
      android:text="Entrar"
+     android:backgroundTint="#1f76ab"
+     android:textColor="#ffffff"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintStart_toStartOf="parent"
      app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
