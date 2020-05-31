@@ -17,40 +17,46 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class UsuarioListaAperturaModificar extends AppCompatActivity {
-    String nombreLista = "";
+public class UsuarioListaPorterilloModificar extends AppCompatActivity {
+    String puerta = "";
     String usuario = "";
     Button btnGuardar, btnVolver;
-    EditText txtNumero, txtNombre, txtObs1, txtObs2;
+    EditText txtPuerta, txtNumero1, txtNumero2, txtNumero3, txtObservaciones;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usuario_lista_apertura_insertar);
+    protected void onCreate(Bundle saveInstanceState) {
+        super.onCreate(saveInstanceState);
+        setContentView(R.layout.activity_usuario_lista_porterillo_insertar);
 
-        usuario = getIntent().getStringExtra("user");
-        nombreLista = getIntent().getStringExtra("sel");
+        usuario = getIntent().getStringExtra("su");
+        puerta = getIntent().getStringExtra("select");
 
-        btnGuardar = (Button) findViewById(R.id.btnInsGuardar);
-        btnVolver = (Button) findViewById(R.id.btnVolver);
-        txtNumero = (EditText) findViewById(R.id.txtInsNumero);
-        txtNombre = (EditText) findViewById(R.id.txtInsNombre);
-        txtObs1 = (EditText) findViewById(R.id.txtInsObs1);
-        txtObs2 = (EditText) findViewById(R.id.txtInsObs2);
+        btnGuardar = findViewById(R.id.btnInsGuardar);
+        btnVolver = findViewById(R.id.btnVolver);
+        txtPuerta = findViewById(R.id.txtInsPuerta);
+        txtNumero1 = findViewById(R.id.txtInsNumero1);
+        txtNumero2 = findViewById(R.id.txtInsNumero2);
+        txtNumero3 = findViewById(R.id.txtInsNumero3);
+        txtObservaciones = findViewById(R.id.txtInsObs);
 
-        new consultaLista().execute();
+
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UsuarioListaPorterilloModificar.super.onBackPressed();
+            }
+        });
 
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new modificarLista().execute();
+                new modificarListaPorterillo().execute();
             }
         });
-
     }
 
     class consultaLista extends AsyncTask<Void,Void,Void>{
         String error = "";
-        String num, obs1, obs2;
+        String num,num2,num3,obs;
         @Override
         protected Void doInBackground(Void... voids) {
             try{
@@ -59,12 +65,13 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
 
                 Statement statement = connection.createStatement();
 
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+usuario+" WHERE nombre ='"+nombreLista+"'");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_porterillo_"+usuario+" WHERE puerta ='"+puerta+"'");
 
                 while(resultSet.next()){
-                    num = resultSet.getString(1);
-                    obs1 = resultSet.getString(3);
-                    obs2 = resultSet.getString(4);
+                    num = resultSet.getString(3);
+                    num2 = resultSet.getString(4);
+                    num3 = resultSet.getString(5);
+                    obs = resultSet.getString(6);
                 }
 
             }catch (Exception e){
@@ -77,13 +84,16 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            txtNumero.setText(num);
-            txtNombre.setText(nombreLista);
-            txtObs1.setText(obs1);
-            txtObs2.setText(obs2);
+            txtPuerta.setText(puerta);
+            System.out.println();
+            txtNumero1.setText(num);
+            txtNumero2.setText(num2);
+            txtNumero3.setText(num3);
+            txtObservaciones.setText(obs);
         }
     }
-    class modificarLista extends AsyncTask<Void,Void,Void>{
+
+    class modificarListaPorterillo extends AsyncTask<Void, Void, Void>{
         String error = "";
         @SuppressLint("WrongThread")
         @Override
@@ -95,15 +105,16 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
 
                 //Inserto usuario
                 Statement statement = connection.createStatement();
-                String sql = "UPDATE lista_apertura_"+usuario+" SET numero = ?, nombre = ? ,observacion1 = ?, observacion2 = ? WHERE nombre = ?";
+                String sql = "UPDATE lista_apertura_"+usuario+" SET puerta = ?, numero1 = ? , numero2 = ?, numero3 = ?, observacion1 = ? WHERE puerta = ?";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-                preparedStatement.setString(1, txtNumero.getText().toString());
-                preparedStatement.setString(2, txtNombre.getText().toString());
-                preparedStatement.setString(3, txtObs1.getText().toString());
-                preparedStatement.setString(4, txtObs2.getText().toString());
-                preparedStatement.setString(5,nombreLista);
+                preparedStatement.setString(1, txtPuerta.getText().toString());
+                preparedStatement.setString(2, txtNumero1.getText().toString());
+                preparedStatement.setString(3, txtNumero2.getText().toString());
+                preparedStatement.setString(4, txtNumero3.getText().toString());
+                preparedStatement.setString(5, txtObservaciones.getText().toString());
+                preparedStatement.setString(6, puerta);
 
                 preparedStatement.executeUpdate();
 

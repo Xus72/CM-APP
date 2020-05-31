@@ -16,7 +16,9 @@
         <activity android:name=".UsuarioListaPorterillo" />
         <activity android:name=".UsuarioListaPorterilloInsertar" />
         <activity android:name=".UsuarioListaPorterilloBorrar" />
+        <activity android:name=".UsuarioListaPorterilloModificar" />
         <activity android:name=".UsuarioListaApertura" />
+        <activity android:name=".GestionListaPorterillo" />
         <activity android:name=".UsuarioListaAperturaInsertar" />
         <activity android:name=".UsuarioListaAperturaBorrar" />
         <activity android:name=".UsuarioListaAperturaModificar" />

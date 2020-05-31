@@ -74,6 +74,13 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 new consultarListaApertura().execute();
             }
         });
+
+        btnPorterillo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new consultarListaPorterillo().execute();
+            }
+        });
     }
     class consultarListaApertura extends  AsyncTask<Void,Void,Void>{
         String error = "";
@@ -86,7 +93,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura"+user+" ORDER BY nombre");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+user+" ORDER BY nombre");
 
                 while(resultSet.next()){
                     numero = resultSet.getString(1);
@@ -113,6 +120,47 @@ public class GestionUsuariosModificar extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    class consultarListaPorterillo extends  AsyncTask<Void,Void,Void>{
+        String error = "";
+        String numero1, numero2, puerta, observaciones, numero3;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_porterillo_"+user+" ORDER BY puerta");
+
+                while(resultSet.next()){
+                    puerta = resultSet.getString(2);
+                    numero1 = resultSet.getString(3);
+                    numero2 = resultSet.getString(4);
+                    numero3 = resultSet.getString(5);
+                    observaciones = resultSet.getString(6);
+                }
+
+            } catch (Exception e) {
+                error.toString();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent intent = new Intent(getBaseContext(), GestionListaPorterillo.class);
+            intent.putExtra("user",user);
+            intent.putExtra("puerta", puerta);
+            intent.putExtra("numero1",numero1);
+            intent.putExtra("numero2",numero2);
+            intent.putExtra("numero3",numero3);
+            intent.putExtra("observaciones",observaciones);
+            startActivity(intent);
+        }
+    }
+
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
         String error = "";
 
@@ -126,13 +174,14 @@ public class GestionUsuariosModificar extends AppCompatActivity {
 
                 //Inserto usuario
                 Statement statement = connection.createStatement();
-                String sql = "UPDATE usuarios SET pass = ?, empresa = ? ,cif = ?, listaApertura = ?, listaPorterillo = ? WHERE idUsuario = ?";
+                String sql = "UPDATE usuarios SET pass = ?, empresa = ? ,cif = ? WHERE idUsuario = ?";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
                 preparedStatement.setString(1,pass.getText().toString());
                 preparedStatement.setString(2,empresa.getText().toString());
                 preparedStatement.setString(3,cif.getText().toString());
+                preparedStatement.setString(4,idUser.toString());
 
                 preparedStatement.executeUpdate();
 
@@ -151,8 +200,6 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
             } else {
-                System.out.println(error);
-                System.out.println(pass+" "+empresa+" "+cif+" "+apertura+" "+porterillo);
                 Toast.makeText(getApplicationContext(),
                         "Ups!, hubo un problema al insertar el usuario", Toast.LENGTH_LONG).show();
 
