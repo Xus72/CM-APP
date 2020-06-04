@@ -23,6 +23,7 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
     Button btnGuardar, btnVolver;
     EditText txtPuerta, txtNumero1, txtNumero2, txtNumero3, txtObservaciones;
 
+
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_usuario_lista_porterillo_insertar);
@@ -38,6 +39,7 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
         txtNumero3 = findViewById(R.id.txtInsNumero3);
         txtObservaciones = findViewById(R.id.txtInsObs);
 
+        new UsuarioListaPorterilloModificar.consultaLista().execute();
 
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +98,6 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
     class modificarListaPorterillo extends AsyncTask<Void, Void, Void>{
         String error = "";
         @SuppressLint("WrongThread")
-        @Override
         protected Void doInBackground(Void... voids) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -105,7 +106,7 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
 
                 //Inserto usuario
                 Statement statement = connection.createStatement();
-                String sql = "UPDATE lista_apertura_"+usuario+" SET puerta = ?, numero1 = ? , numero2 = ?, numero3 = ?, observacion1 = ? WHERE puerta = ?";
+                String sql = "UPDATE lista_porterillo_"+usuario+" SET puerta = ?, numero1 = ? , numero2 = ?, numero3 = ?, observaciones = ? WHERE puerta ="+puerta;
 
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -114,7 +115,7 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
                 preparedStatement.setString(3, txtNumero2.getText().toString());
                 preparedStatement.setString(4, txtNumero3.getText().toString());
                 preparedStatement.setString(5, txtObservaciones.getText().toString());
-                preparedStatement.setString(6, puerta);
+                //preparedStatement.setString(6, puerta);
 
                 preparedStatement.executeUpdate();
 
@@ -134,7 +135,7 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
                 setResult(100, intent);
                 finish();
             }else{
-                Toast.makeText(getApplicationContext(), "Se ha producido un error",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Se ha producido un error: "+error,Toast.LENGTH_LONG).show();
             }
         }
     }

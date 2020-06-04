@@ -45,6 +45,12 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
                 new modificarLista().execute();
             }
         });
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UsuarioListaAperturaModificar.super.onBackPressed();
+            }
+        });
 
     }
 

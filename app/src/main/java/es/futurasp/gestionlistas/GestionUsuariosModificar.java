@@ -164,8 +164,6 @@ public class GestionUsuariosModificar extends AppCompatActivity {
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
         String error = "";
 
-        @SuppressLint("WrongThread")
-        @Override
         protected Void doInBackground(Void... voids) {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
@@ -199,6 +197,9 @@ public class GestionUsuariosModificar extends AppCompatActivity {
             if (error == "") {
                 Toast.makeText(getApplicationContext(),
                         "Usuario insertado correctamente", Toast.LENGTH_LONG).show();
+                Intent me = getIntent();
+                setResult(100, me);
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Ups!, hubo un problema al insertar el usuario", Toast.LENGTH_LONG).show();
