@@ -19,7 +19,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class GestionListaApertura extends AppCompatActivity {
-    String user = "";
+    String usuario = null;
     ArrayList<String> numeros = new ArrayList<>();
     ArrayList<String> nombres = new ArrayList<>();
     ArrayList<String> observaciones1 = new ArrayList<>();
@@ -33,12 +33,29 @@ public class GestionListaApertura extends AppCompatActivity {
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         TextView texto = (TextView) findViewById(R.id.textView2);
         lista = (ListView) findViewById(R.id.listaView);
+        Button btnApertura = (Button) findViewById(R.id.btnApertura);
 
-        user = getIntent().getStringExtra("user");
+        usuario = getIntent().getStringExtra("usuario");
         String numero = getIntent().getStringExtra("numero");
         String nombre = getIntent().getStringExtra("nombre");
         String obs1 = getIntent().getStringExtra("observaciones1");
         String obs2 = getIntent().getStringExtra("observaciones2");
+        String listaApertura = getIntent().getStringExtra("listaApertura");
+        final String su = usuario;
+        System.out.println(su);
+        if(listaApertura == "no"){
+            btnApertura.setVisibility(View.VISIBLE);
+        }
+
+       /*btnApertura.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String usuario = su;
+                Intent intent = new Intent(getBaseContext(), UsuarioListaAperturaInsertar.class);
+                intent.putExtra("usuario",usuario);
+                startActivity(intent);
+            }
+        });*/
 
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +76,7 @@ public class GestionListaApertura extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+user+" ORDER BY nombre");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+usuario+" ORDER BY nombre");
 
                 while(resultSet.next()){
                     numeros.add(resultSet.getString(1));
@@ -85,7 +102,7 @@ public class GestionListaApertura extends AppCompatActivity {
                     String sel = adapter.getItem(position).toString();
                     Intent intent = new Intent(getBaseContext(), UsuarioListaAperturaModificar.class);
                     intent.putExtra("sel",sel);
-                    intent.putExtra("user",user);
+                    intent.putExtra("usuario",usuario);
                     startActivity(intent);
                 }
             });
