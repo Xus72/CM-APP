@@ -78,8 +78,10 @@ public class UsuarioListaApertura extends AppCompatActivity {
         btnModificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //CONSULTO A LA BASE DE DATOS
-               // new UsuarioListaApertura.selModificarUsuario().execute();
+                Intent intent = new Intent(view.getContext(), GestionListaApertura.class);
+                intent.putExtra("usuario",usuarioSeleccionado);
+                startActivityForResult(intent,100);
+
             }
 
         });

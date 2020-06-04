@@ -21,9 +21,9 @@ import java.sql.Statement;
 public class GestionUsuariosModificar extends AppCompatActivity {
 
     EditText pass, empresa, cif;
-    CheckBox apertura, porterillo;
     Integer idUser;
-    String user;
+    String usuario, listaApertura, listaPorterillo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,20 +32,18 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         pass = (EditText) findViewById(R.id.txtInsPassword);
         empresa = (EditText) findViewById(R.id.txtInsEmpresa);
         cif = (EditText) findViewById(R.id.txtInsCif);
-        apertura = (CheckBox) findViewById(R.id.checkApertura);
-        porterillo = (CheckBox) findViewById(R.id.checkPorterillo);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnGuardar = (Button) findViewById(R.id.btnInsGuardar);
         Button btnApertura = (Button) findViewById(R.id.btnListaApertura);
         Button btnPorterillo = (Button) findViewById(R.id.btnListaPorterillo);
 
         idUser = getIntent().getIntExtra("idUsuario",0);
-        user = getIntent().getStringExtra("usuario");
+        usuario = getIntent().getStringExtra("usuario");
         String contraseña = getIntent().getStringExtra("pass");
         String enterprise = getIntent().getStringExtra("empresa");
         String cifUser = getIntent().getStringExtra("cif");
-        String listaApertura = getIntent().getStringExtra("listaApertura");
-        String listaPorterillo = getIntent().getStringExtra("listaPorterillo");
+        listaApertura = getIntent().getStringExtra("listaApertura");
+        listaPorterillo = getIntent().getStringExtra("listaPorterillo");
 
         //Asigno el valor de las variables del intent a los EditText
         pass.setText(contraseña);
@@ -93,7 +91,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+user+" ORDER BY nombre");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+usuario+" ORDER BY nombre");
 
                 while(resultSet.next()){
                     numero = resultSet.getString(1);
@@ -112,11 +110,12 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Intent intent = new Intent(getBaseContext(), GestionListaApertura.class);
-            intent.putExtra("user",user);
+            intent.putExtra("usuario",usuario);
             intent.putExtra("numero", numero);
             intent.putExtra("observacion1",observacion1);
             intent.putExtra("nombre",nombre);
             intent.putExtra("observacion2",observacion2);
+            intent.putExtra("listaApertura",listaApertura);
             startActivity(intent);
         }
     }
@@ -131,7 +130,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_porterillo_"+user+" ORDER BY puerta");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_porterillo_"+usuario+" ORDER BY puerta");
 
                 while(resultSet.next()){
                     puerta = resultSet.getString(2);
@@ -151,12 +150,13 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Intent intent = new Intent(getBaseContext(), GestionListaPorterillo.class);
-            intent.putExtra("user",user);
+            intent.putExtra("usuario",usuario);
             intent.putExtra("puerta", puerta);
             intent.putExtra("numero1",numero1);
             intent.putExtra("numero2",numero2);
             intent.putExtra("numero3",numero3);
             intent.putExtra("observaciones",observaciones);
+            intent.putExtra("listaPorterillo",listaPorterillo);
             startActivity(intent);
         }
     }

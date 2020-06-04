@@ -116,9 +116,8 @@ public class MainActivity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri twit = Uri.parse("mailto:facebook@futurasp.es");
-                Intent intentTw = new Intent(Intent.ACTION_VIEW,twit);
-                startActivity(intentTw);
+                Intent intent = new Intent(getBaseContext(), CorreoContacto.class);
+                startActivity(intent);
             }
         });
 

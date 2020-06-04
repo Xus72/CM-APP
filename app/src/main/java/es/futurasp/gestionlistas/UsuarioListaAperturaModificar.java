@@ -27,7 +27,7 @@ public class UsuarioListaAperturaModificar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario_lista_apertura_insertar);
 
-        usuario = getIntent().getStringExtra("user");
+        usuario = getIntent().getStringExtra("usuario");
         nombreLista = getIntent().getStringExtra("sel");
 
         btnGuardar = (Button) findViewById(R.id.btnInsGuardar);

@@ -72,7 +72,9 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //CONSULTO A LA BASE DE DATOS
-                // new UsuarioListaApertura.selModificarUsuario().execute();
+                Intent intent = new Intent(view.getContext(), GestionListaPorterillo.class);
+                intent.putExtra("usuario",usuarioSeleccionado);
+                startActivityForResult(intent,100);
             }
 
         });
