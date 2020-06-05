@@ -36,7 +36,7 @@ public class GestionListaPorterillo extends AppCompatActivity {
         TextView texto = (TextView) findViewById(R.id.textView2);
         lista = (ListView) findViewById(R.id.listaView);
 
-        su = getIntent().getStringExtra("user");
+        su = getIntent().getStringExtra("usuario");
         String puerta = getIntent().getStringExtra("puerta");
         String numero1 = getIntent().getStringExtra("numero1");
         String numero2 = getIntent().getStringExtra("numero2");
@@ -55,6 +55,13 @@ public class GestionListaPorterillo extends AppCompatActivity {
 
     class consultaListaPorterillo extends AsyncTask<Void,Void,Void>{
         String error = "";
+        String sql ="";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            sql = "SELECT * FROM lista_porterillo_"+su+" ORDER BY puerta";
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -64,7 +71,7 @@ public class GestionListaPorterillo extends AppCompatActivity {
                 Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_porterillo_"+su+" ORDER BY puerta");
+                ResultSet resultSet = statement.executeQuery(sql);
 
                 while(resultSet.next()){
                     puertas.add(resultSet.getString(2));
