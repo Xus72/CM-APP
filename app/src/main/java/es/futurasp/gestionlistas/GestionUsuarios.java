@@ -16,8 +16,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import javax.xml.transform.Result;
 
 public class GestionUsuarios extends AppCompatActivity {
     ArrayList<String> listaUsuarios = new ArrayList<String>();
@@ -26,7 +29,8 @@ public class GestionUsuarios extends AppCompatActivity {
     Integer resBorradoListaApertura = 0;
     Integer resBorradoListaPorterillo = 0;
     Integer idUsuario;
-    String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
+    int pasaNumVivi;
+    String usuario, pass, empresa, cif, listaApertura, listaPorterillo, ubiApert, ubiPort;
     Date ultimaConexion;
 
     @Override
@@ -174,6 +178,8 @@ public class GestionUsuarios extends AppCompatActivity {
                     cif=resultSet.getString(6);
                     listaApertura=resultSet.getString(7);
                     listaPorterillo=resultSet.getString(8);
+                    ubiApert=resultSet.getString(9);
+                    ubiPort=resultSet.getString(10);
                 }
 
 
@@ -193,6 +199,8 @@ public class GestionUsuarios extends AppCompatActivity {
             intent.putExtra("usuario", usuario);
             intent.putExtra("listaApertura", listaApertura);
             intent.putExtra("listaPorterillo", listaPorterillo);
+            intent.putExtra("ubiApert", ubiApert);
+            intent.putExtra("ubiPort",ubiPort);
             startActivity(intent);
         }
     }
@@ -274,12 +282,31 @@ public class GestionUsuarios extends AppCompatActivity {
                     cif=resultSet.getString(6);
                     listaApertura=resultSet.getString(7);
                     listaPorterillo=resultSet.getString(8);
+                    ubiApert=resultSet.getString(9);
+                    ubiPort=resultSet.getString(10);
                 }
-
 
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
+            }
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+
+                Statement statement = connection.createStatement();
+                //Guardo en resultSet el resultado de la consulta
+                System.out.println("Se ha seleccionado el item en la consulta:"+ itemSeleccionado);
+                ResultSet resultSet = statement.executeQuery("select count(*) from lista_porterillo_"+itemSeleccionado);
+
+                while (resultSet.next()){
+                    pasaNumVivi = resultSet.getInt(1);
+                }
+
+                System.out.println("Resultado consulta: "+pasaNumVivi);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
         }
@@ -296,6 +323,9 @@ public class GestionUsuarios extends AppCompatActivity {
             intent.putExtra("cif",cif);
             intent.putExtra("listaApertura", listaApertura);
             intent.putExtra("listaPorterillo", listaPorterillo);
+            intent.putExtra("ubiApert", ubiApert);
+            intent.putExtra("ubiPort", ubiPort);
+            intent.putExtra("numViviendas", pasaNumVivi);
             startActivity(intent);
         }
     }
