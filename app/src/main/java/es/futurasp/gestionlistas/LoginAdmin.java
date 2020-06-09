@@ -24,7 +24,7 @@ public class LoginAdmin extends AppCompatActivity {
     ArrayList<String> listaUsuarios = new ArrayList<String>();
     public String itemSeleccionado = null;
     Integer idUsuario;
-    String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
+    String usuario, pass, empresa, cif, listaApertura, listaPorterillo, ubiApert, ubiPort;
     Date ultimaConexion;
     Spinner spinnerUsuarios;
     //MÉTODO ON CREATE
@@ -82,7 +82,7 @@ public class LoginAdmin extends AppCompatActivity {
 
                 Statement statement = connection.createStatement();
                 //Guardo en resultSet el resultado de la consulta
-                ResultSet resultSet = statement.executeQuery("select usuario from usuarios order by usuario");
+                ResultSet resultSet = statement.executeQuery("select usuario, ubiApert, ubiPort from usuarios order by usuario");
 
                 while (resultSet.next()) {
                     listaUsuarios.add(resultSet.getString(1));
@@ -152,6 +152,8 @@ public class LoginAdmin extends AppCompatActivity {
                     cif=resultSet.getString(6);
                     listaApertura=resultSet.getString(7);
                     listaPorterillo=resultSet.getString(8);
+                    ubiApert=resultSet.getString(9);
+                    ubiPort=resultSet.getString(10);
                 }
 
 
@@ -172,6 +174,8 @@ public class LoginAdmin extends AppCompatActivity {
             intent.putExtra("usuario", usuario);
             intent.putExtra("listaApertura", listaApertura);
             intent.putExtra("listaPorterillo", listaPorterillo);
+            intent.putExtra("ubiApert", ubiApert);
+            intent.putExtra("ubiPort", ubiPort);
             startActivity(intent);
         }
     }

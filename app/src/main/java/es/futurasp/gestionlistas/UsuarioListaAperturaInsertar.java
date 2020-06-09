@@ -57,7 +57,6 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
         txtObs1 = (EditText) findViewById(R.id.txtInsObs1);
         txtObs2 = (EditText) findViewById(R.id.txtInsObs2);
         usuario = getIntent().getStringExtra("usuario");
-        direccion = (EditText) findViewById(R.id.txtDirecc);
 
 
         //ACCION BOTON VOLVER
@@ -99,25 +98,18 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            try {
-                /*sql = "insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2, lat, lng) " +
-                        "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() +
-                        "','" + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";*/
-                sql_nn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2, lat, lng) "+
-                        " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, null, " +
-                        obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
-                sql_nx="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2, lat, lng) "+
-                        " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', " + obs1 +
-                        ", null, " + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
-                sql_xn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2, lat, lng) "+
-                        " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, " + obs2 +
-                        ", " + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
-                sql_xx="insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2, lat, lng) " +
-                        "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + obs1 + "', '" + obs2 +
-                        "','" + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            /*sql = "insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2, lat, lng) " +
+                    "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() +
+                    "','" + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";*/
+            sql_nn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2) "+
+                    " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, null);";
+            sql_nx="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2) "+
+                    " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', " + obs1 +
+                    ", null);";
+            sql_xn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2) "+
+                    " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, " + obs2 + "');";
+            sql_xx="insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2) " +
+                    "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + obs1 + "', '" + obs2 + "');";
         }
 
 
@@ -182,28 +174,5 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
             }
         }
     }
-
-    String obtenLat(String ubicacion) throws IOException {
-        String lat = "0.0";
-        Geocoder gc = new Geocoder(this);
-        List<Address> list = gc.getFromLocationName(ubicacion,1);
-        Address dir = list.get(0);
-        String punto = dir.getLocality();
-        Double latit = dir.getLatitude();
-        lat = latit.toString();
-        return lat;
-    }
-
-    String obtenLong(String ubicacion) throws IOException {
-        String lng = "0.0";
-        Geocoder gc = new Geocoder(this);
-        List<Address> list = gc.getFromLocationName(ubicacion,1);
-        Address dir = list.get(0);
-        String punto = dir.getLocality();
-        Double latit = dir.getLongitude();
-        lng = latit.toString();
-        return lng;
-    }
-
 
 }

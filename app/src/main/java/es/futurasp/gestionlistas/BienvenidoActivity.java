@@ -24,6 +24,8 @@ public class BienvenidoActivity extends AppCompatActivity {
         final String usuario = getIntent().getStringExtra("usuario");
         final String listaApertura = getIntent().getStringExtra("listaApertura");
         final String listaPorterillo = getIntent().getStringExtra("listaPorterillo");
+        final String ubiApert = getIntent().getStringExtra("ubiApert");
+        final String ubiPort = getIntent().getStringExtra("ubiPort");
 
         //BOTON VOLVER
         btnVolver.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +45,7 @@ public class BienvenidoActivity extends AppCompatActivity {
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("listaApertura", listaApertura);
                 intent.putExtra("listaPorterillo", listaPorterillo);
+                intent.putExtra("ubiApert", ubiApert);
                 startActivity(intent);
             }
         });
@@ -55,6 +58,7 @@ public class BienvenidoActivity extends AppCompatActivity {
                 intent.putExtra("usuario", usuario);
                 intent.putExtra("listaApertura", listaApertura);
                 intent.putExtra("listaPorterillo", listaPorterillo);
+                intent.putExtra("ubiPort", ubiPort);
                 startActivity(intent);
             }
         });

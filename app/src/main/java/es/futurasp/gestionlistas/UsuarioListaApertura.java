@@ -32,6 +32,7 @@ public class UsuarioListaApertura extends AppCompatActivity {
     String tieneListaPorterillo = null;
     int contadorRegistros;
     Tabla tabla;
+    String ubicacion;
 
     ArrayList<List<String>> listaAtributosUsuarios = new ArrayList<>();
     ArrayList<String> atributosUsuarios = new ArrayList<>();
@@ -56,6 +57,7 @@ public class UsuarioListaApertura extends AppCompatActivity {
         usuarioSeleccionado = getIntent().getStringExtra("usuario");
         tieneListaApertura = getIntent().getStringExtra("listaApertura");
         tieneListaPorterillo = getIntent().getStringExtra("listaPorterillo");
+        ubicacion = getIntent().getStringExtra("ubiApert");
 
 
         //ACCION BOTON VOLVER
@@ -101,8 +103,9 @@ public class UsuarioListaApertura extends AppCompatActivity {
         btnLocalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), UsuarioListaAperturaLocalizar.class);
+                Intent intent = new Intent(view.getContext(), mapaUbicacionApertura.class);
                 intent.putExtra("usuario", usuarioSeleccionado);
+                intent.putExtra("ubiApert", ubicacion);
                 startActivityForResult(intent, 100);
 
             }

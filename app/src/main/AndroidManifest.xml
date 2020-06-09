@@ -29,6 +29,7 @@
         <activity android:name=".LoginAdmin" />
         <activity android:name=".UsuarioListaAperturaLocalizar" />
         <activity android:name=".mapaUbicacionPortero" />
+        <activity android:name=".mapaUbicacionApertura" />
         <activity android:name=".UsuarioListaPorterilloLocalizar" />
         <activity android:name=".MainActivity">
             <intent-filter>

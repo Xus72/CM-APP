@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin;
     EditText textUsuario, textPassword;
     Integer idUsuario;
-    String usuario, pass, empresa, cif, listaApertura, listaPorterillo;
+    String usuario, pass, empresa, cif, listaApertura, listaPorterillo, ubiApert, ubiPort;
     Date ultimaConexion;
     ImageButton imageButton, imageButton2, imageButton3, btnLlamadaAtCl;
 
@@ -158,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
                     cif=resultSet.getString(6);
                     listaApertura=resultSet.getString(7);
                     listaPorterillo=resultSet.getString(8);
+                    ubiApert=resultSet.getString(9);
+                    ubiPort=resultSet.getString(10);
                 }
 
             } catch (Exception e) {
@@ -186,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("usuario", usuario);
                     intent.putExtra("listaApertura", listaApertura);
                     intent.putExtra("listaPorterillo", listaPorterillo);
+                    intent.putExtra("ubiApert", ubiApert);
+                    intent.putExtra("ubiPort", ubiPort);
 
                     startActivity(intent);
                 }

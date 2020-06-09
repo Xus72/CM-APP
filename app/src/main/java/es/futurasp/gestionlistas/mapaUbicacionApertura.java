@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
-public class mapaUbicacionPortero extends FragmentActivity implements OnMapReadyCallback {
+public class mapaUbicacionApertura extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     String usuario;
@@ -56,9 +56,10 @@ public class mapaUbicacionPortero extends FragmentActivity implements OnMapReady
         String[] partes;
         Double lat = 0.0;
         Double lng = 0.0;
-        partes = ubiPort.split(",");
+        partes = ubiApert.split(",");
         lat = Double.parseDouble(partes[0]);
         lng = Double.parseDouble(partes[1]);
+
         LatLng porterillo = new LatLng(lat, lng);
         // He usado de ejemplo el Ayto de mi pueblo. En snippet se añade la descripción de la marca en el mapa
         //mMap.addMarker(new MarkerOptions().position(porterillo).title("Ayuntamiento de El Viso del Alcor").snippet("Entrada para el parking"));

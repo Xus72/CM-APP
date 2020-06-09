@@ -9,11 +9,11 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="196dp"
+        android:layout_width="218dp"
+        android:layout_height="104dp"
         app:srcCompat="@drawable/futura"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteX="96dp"
         tools:layout_editor_absoluteY="16dp" />
 
     <Button
@@ -21,15 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="220dp"
-        android:layout_marginTop="330dp"
+        android:layout_marginTop="445dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/button_rounded"
-        android:text="Volver"
         android:backgroundTint="#1f76ab"
+        android:text="Volver"
         android:textColor="#ffffff"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
@@ -104,6 +104,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="180dp"
         android:text="Lista Apertura"
+        android:onClick="onCheckboxClicked1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtInsCif" />
@@ -125,11 +126,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="330dp"
+        android:layout_marginTop="445dp"
         android:layout_marginEnd="220dp"
         android:background="@drawable/button_rounded"
-        android:text="Guardar"
         android:backgroundTint="#1f76ab"
+        android:text="Guardar"
         android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -142,13 +143,49 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="240dp"
         android:layout_marginEnd="60dp"
-        android:hint="Nº Viviendas"
-        android:visibility="invisible"
-        android:inputType="number"
         android:backgroundTint="#1f76ab"
+        android:hint="Nº Viviendas"
+        android:inputType="number"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/btnVolver"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkPorterillo" />
+        app:layout_constraintTop_toBottomOf="@+id/checkPorterillo"
+        app:layout_constraintVertical_bias="0.089" />
+
+    <EditText
+        android:id="@+id/txtUbiApert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="#1f76ab"
+        android:hint="Dirección apertura"
+        android:inputType="textPersonName"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtInsNumViviendas"
+        app:layout_constraintVertical_bias="0.089" />
+
+    <EditText
+        android:id="@+id/txtUbiPort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="#1f76ab"
+        android:hint="Dirección porterillo"
+        android:inputType="textPersonName"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtUbiApert"
+        app:layout_constraintVertical_bias="0.089" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
