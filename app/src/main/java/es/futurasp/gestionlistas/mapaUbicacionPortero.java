@@ -14,11 +14,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class mapaUbicacionPortero extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    String usuario;
+    String latitud;
+    String longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa_ubicacion_portero);
+
+        usuario = getIntent().getStringExtra("usuario");
+        latitud = getIntent().getStringExtra("lat");
+        longitud = getIntent().getStringExtra("lng");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -41,9 +48,12 @@ public class mapaUbicacionPortero extends FragmentActivity implements OnMapReady
 
         // En la v y en la v1 se deben pasar las coordenadas del porterillo, en el title el nombre del mismo
         // Estos datos deben pasarse por variables
-        LatLng porterillo = new LatLng(37.388487, -5.718658);
+        Double lat = Double.parseDouble(latitud);
+        Double lng = Double.parseDouble(longitud);
+        LatLng porterillo = new LatLng(lat, lng);
         // He usado de ejemplo el Ayto de mi pueblo. En snippet se añade la descripción de la marca en el mapa
-        mMap.addMarker(new MarkerOptions().position(porterillo).title("Ayuntamiento de El Viso del Alcor").snippet("Entrada para el parking"));
+        //mMap.addMarker(new MarkerOptions().position(porterillo).title("Ayuntamiento de El Viso del Alcor").snippet("Entrada para el parking"));
+        mMap.addMarker(new MarkerOptions().position(porterillo));
         // La v de la siguiente función indica el zoom aplicado al mapa
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(porterillo, 20));
     }

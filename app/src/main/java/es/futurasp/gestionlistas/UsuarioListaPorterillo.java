@@ -43,6 +43,7 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
         Button btnModificar = (Button) findViewById(R.id.btnModificarUsuario);
         Button btnBorrar = (Button) findViewById(R.id.btnBorrarUsuario);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
+        Button btnLocalizar = (Button) findViewById(R.id.btnLocalizar);
         tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
 
 
@@ -84,6 +85,16 @@ public class UsuarioListaPorterillo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), UsuarioListaPorterilloBorrar.class);
+                intent.putExtra("usuario", usuarioSeleccionado);
+                startActivityForResult(intent, 100);
+
+            }
+        });
+
+        btnLocalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), UsuarioListaPorterilloLocalizar.class);
                 intent.putExtra("usuario", usuarioSeleccionado);
                 startActivityForResult(intent, 100);
 

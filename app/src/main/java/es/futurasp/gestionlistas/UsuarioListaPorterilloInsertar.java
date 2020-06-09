@@ -2,6 +2,8 @@ package es.futurasp.gestionlistas;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,16 +13,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
-    EditText txtPuerta, txtNumero1, txtNumero2, txtNumero3, txtObs;
+    EditText txtPuerta, txtNumero1, txtNumero2, txtNumero3, txtObs, txtDirec;
     Integer puerta=0, numero1=0, numero2=0,numero3=0;
     String puertaString=null, numero1String=null,numeString=null, numero2String=null, numero3String=null;
     String observaciones= null;
     String usuario = null;
+    String direccion = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,7 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
         txtNumero2 = (EditText) findViewById(R.id.txtInsNumero2);
         txtNumero3 = (EditText) findViewById(R.id.txtInsNumero3);
         txtObs = (EditText) findViewById(R.id.txtInsObs);
+        txtDirec = (EditText) findViewById(R.id.txtDirecc);
         usuario = getIntent().getStringExtra("usuario");
 
 
@@ -54,6 +60,7 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
                 numero2String = txtNumero2.getText().toString();
                 numero3String = txtNumero3.getText().toString();
                 observaciones = txtObs.getText().toString();
+                direccion = txtDirec.getText().toString();
                 //HAGO EL PARSEO A INT
                 if (!numero1String.isEmpty()){
                     numero1 =Integer.parseInt(txtNumero1.getText().toString());
@@ -71,16 +78,16 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
                     txtNumero1.setError("Debe introducir un número de puerta");
                 }
                 if (numero1==0 && numero2==0 && numero3==0 ){
-                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellenar por el número 1");
                 }
                 else if (numero1==0 && numero2!=0 && numero3!=0 ){
-                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellenar por el número 1");
                 }
                 else if (numero1==0 && numero2!=0 && numero3==0 ){
-                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellenar por el número 1");
                 }
                 else if (numero1==0 && numero2==0 && numero3!=0 ){
-                    txtNumero1.setError("Debe empezar a rellanar por el número 1");
+                    txtNumero1.setError("Debe empezar a rellenar por el número 1");
                 }
                 else{
                     new insertarUsuarios().execute();
@@ -97,12 +104,23 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            sql_nnn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null' where puerta=" + puerta+";";
-            sql_nnx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null' where puerta=" + puerta+";";;
-            sql_xnn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3=null, observaciones='null' where puerta=" + puerta+";";;
-            sql_xxn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3="+numero3+", observaciones='null' where puerta=" + puerta+";";;
-            sql_xnx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3=null, observaciones='"+observaciones+"' where puerta=" + puerta+";";;
-            sql_xxx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3="+numero3+", observaciones='"+observaciones+"' where puerta=" + puerta+";";;
+            try {
+                sql_nnn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null', lat="+ obtenLat(direccion.toString())
+                    + ", lng="+ obtenLong(direccion.toString()).toString() +" where puerta=" + puerta+";";
+                sql_nnx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2=null , numero3=null, observaciones='null', lat="+ obtenLat(direccion.toString())
+                    + ", lng="+ obtenLong(direccion.toString()).toString() +" where puerta=" + puerta+";";
+                sql_xnn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3=null, observaciones='null', lat="+ obtenLat(direccion.toString())
+                    + ", lng="+ obtenLong(direccion.toString()).toString() +" where puerta=" + puerta+";";
+                sql_xxn="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3="+numero3+", observaciones='null', lat="+ obtenLat(direccion.toString()) +
+                        ", lng="+ obtenLong(direccion.toString()).toString() +" where puerta=" + puerta+";";
+                sql_xnx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3=null, observaciones='"+observaciones+"', lat="+ obtenLat(direccion.toString()) +
+                        ", lng="+ obtenLong(direccion.toString()).toString() +" where puerta=" + puerta+";";
+                sql_xxx="update lista_porterillo_" + usuario + " set numero1=" + numero1 + ", numero2="+numero2+" , numero3="+numero3+", observaciones='"+observaciones+"', lat="+
+                        obtenLat(direccion.toString()) + ", lng="+ obtenLong(direccion.toString()).toString() +" where puerta=" + puerta+";";
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
         @Override
@@ -173,6 +191,28 @@ public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
             }
 
         }
+    }
+
+    String obtenLat(String ubicacion) throws IOException {
+        String lat = "0.0";
+        Geocoder gc = new Geocoder(this);
+        List<Address> list = gc.getFromLocationName(ubicacion,1);
+        Address dir = list.get(0);
+        String punto = dir.getLocality();
+        Double latit = dir.getLatitude();
+        lat = latit.toString();
+        return lat;
+    }
+
+    String obtenLong(String ubicacion) throws IOException {
+        String lng = "0.0";
+        Geocoder gc = new Geocoder(this);
+        List<Address> list = gc.getFromLocationName(ubicacion,1);
+        Address dir = list.get(0);
+        String punto = dir.getLocality();
+        Double latit = dir.getLongitude();
+        lng = latit.toString();
+        return lng;
     }
 
 

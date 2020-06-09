@@ -116,12 +116,13 @@ public class GestionUsuariosInsertar extends AppCompatActivity {
                 int resultSet = statement.executeUpdate("insert into usuarios (usuario, pass, empresa, cif, listaApertura, listaPorterillo) values ('" + txtInsUsuario.getText().toString() + "', '" + txtInsPassword.getText().toString() + "', '" + txtInsPassword.getText().toString() + "','" + txtInsCif.getText().toString() + "', '" + marcadoApertura + "', '" + marcadoPorterillo + "');");
                 if (marcadoApertura=="si") {
                     int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + txtInsUsuario.getText().toString() +
-                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
+                            " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, lat VARCHAR(45) NULL, lng VARCHAR(45) NULL, PRIMARY KEY (numero));");
                 }
                 if (marcadoPorterillo=="si") {
                     verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
                     int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + txtInsUsuario.getText().toString() +
-                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
+                            " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, " +
+                            "lat VARCHAR(45) NULL, lng VARCHAR(45) NULL, PRIMARY KEY (id));");
                     for (int i = 1; i < verificaNumVivienda+1; i++){
                         int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ txtInsUsuario.getText().toString() +" (id, puerta) values ("+i+" ,"+i+");");
                     }

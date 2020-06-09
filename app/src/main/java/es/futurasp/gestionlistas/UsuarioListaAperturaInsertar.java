@@ -2,6 +2,8 @@ package es.futurasp.gestionlistas;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -12,16 +14,35 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+//import org.json.simple.parser.JSONParser;
+import com.google.android.gms.common.util.IOUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class UsuarioListaAperturaInsertar extends AppCompatActivity {
     EditText txtNumero;
     EditText txtNombre;
     EditText txtObs1;
     EditText txtObs2;
+    EditText direccion;
     String usuario = null;
+    String obs1, obs2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +57,7 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
         txtObs1 = (EditText) findViewById(R.id.txtInsObs1);
         txtObs2 = (EditText) findViewById(R.id.txtInsObs2);
         usuario = getIntent().getStringExtra("usuario");
+        direccion = (EditText) findViewById(R.id.txtDirecc);
 
 
         //ACCION BOTON VOLVER
@@ -57,6 +79,8 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
                 if (verificaNumero.isEmpty()) {
                     txtNumero.setError("No se introdujo ningún número");
                 }
+                obs1 = txtObs1.getText().toString();
+                obs2 = txtObs2.getText().toString();
                 /*if (verificaNumero.matches("[0-9]*")){
                     txtNumero.setError("Debe introducir sólo números");
                 }*/
@@ -69,13 +93,31 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
 
     class insertarUsuarios extends AsyncTask<Void, Void, Void> {
         String error = "";
-        String sql = "";
+        //String sql = "";
+        String sql_nn="", sql_nx="", sql_xn="", sql_xx="", sql_echo="";
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            sql = "insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2) " +
-                    "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() + "');";
+            try {
+                /*sql = "insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2, lat, lng) " +
+                        "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() +
+                        "','" + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";*/
+                sql_nn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2, lat, lng) "+
+                        " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, null, " +
+                        obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
+                sql_nx="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2, lat, lng) "+
+                        " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', " + obs1 +
+                        ", null, " + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
+                sql_xn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2, lat, lng) "+
+                        " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, " + obs2 +
+                        ", " + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
+                sql_xx="insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2, lat, lng) " +
+                        "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + obs1 + "', '" + obs2 +
+                        "','" + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -89,8 +131,28 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
                 Statement statement = connection.createStatement();
 
                 //Inserto usuario
+                if(obs1==null & obs2==null){
+                    int resultSet = statement.executeUpdate(sql_nn);
+                    System.out.println("ejecutado sql_nn");
+                    System.out.println(sql_nn);
+                }
+                if(obs1!=null & obs2==null){
+                    int resultSet = statement.executeUpdate(sql_nx);
+                    System.out.println("ejecutado sql_nx");
+                    System.out.println(sql_nx);
+                }
+                if(obs1==null & obs2!=null){
+                    int resultSet = statement.executeUpdate(sql_xn);
+                    System.out.println("ejecutado sql_xn");
+                    System.out.println(sql_xn);
+                }
+                if(obs1!=null & obs2!=null){
+                    int resultSet = statement.executeUpdate(sql_xx);
+                    System.out.println("ejecutado sql_xx");
+                    System.out.println(sql_xx);
+                }
 
-                int resultSet = statement.executeUpdate(sql);
+                //int resultSet = statement.executeUpdate(sql);
 
                 Intent me = getIntent();
                 setResult(100, me);
@@ -119,6 +181,28 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
 
             }
         }
+    }
+
+    String obtenLat(String ubicacion) throws IOException {
+        String lat = "0.0";
+        Geocoder gc = new Geocoder(this);
+        List<Address> list = gc.getFromLocationName(ubicacion,1);
+        Address dir = list.get(0);
+        String punto = dir.getLocality();
+        Double latit = dir.getLatitude();
+        lat = latit.toString();
+        return lat;
+    }
+
+    String obtenLong(String ubicacion) throws IOException {
+        String lng = "0.0";
+        Geocoder gc = new Geocoder(this);
+        List<Address> list = gc.getFromLocationName(ubicacion,1);
+        Address dir = list.get(0);
+        String punto = dir.getLocality();
+        Double latit = dir.getLongitude();
+        lng = latit.toString();
+        return lng;
     }
 
 
