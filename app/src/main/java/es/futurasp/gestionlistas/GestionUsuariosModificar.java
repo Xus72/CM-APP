@@ -241,7 +241,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 preparedStatement.executeUpdate();
 
                 if (marcadoApertura=="si") {
-                    if(listaApertura=="no"){
+                    if(listaApertura.equals("no")){
                         int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + usuario +
                                 " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
                         System.out.println("Sentencia ejecutada para crear tabla apertura");
@@ -249,14 +249,15 @@ public class GestionUsuariosModificar extends AppCompatActivity {
 
                 }
                 if (marcadoApertura=="no") {
-                    if(listaApertura=="si"){
+                    if(listaApertura.equals("si")){
                         int resultCreate = statement.executeUpdate("DROP TABLE lista_apertura_" + usuario + ";");
                         System.out.println("Sentencia ejecutada para borrar tabla apertura");
                     }
 
                 }
+                System.out.println("entro aqui antes del if");
                 if (marcadoPorterillo=="si") {
-                    if(listaPorterillo=="no"){
+                    if(listaPorterillo.equals("no")){
                         int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + usuario +
                                 " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
                         for (int i = 1; i < verificaNumVivienda+1; i++){
@@ -276,7 +277,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
 
                 }
                 if (marcadoPorterillo=="no") {
-                    if(listaPorterillo=="no"){
+                    if(listaPorterillo.equals("no")){
                         int resultCreate = statement.executeUpdate("DROP TABLE lista_porterillo_" + usuario + ";");
                     }
                 }
@@ -353,7 +354,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 finish();
             } else {
                 Toast.makeText(getApplicationContext(),
-                        "Ups!, hubo un problema al insertar el usuario", Toast.LENGTH_LONG).show();
+                        "Ups!, hubo un problema al modificar el usuario", Toast.LENGTH_LONG).show();
                 System.out.println(error);
 
             }
