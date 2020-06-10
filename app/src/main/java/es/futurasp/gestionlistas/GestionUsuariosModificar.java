@@ -25,8 +25,8 @@ import java.util.List;
 public class GestionUsuariosModificar extends AppCompatActivity {
 
     EditText pass, empresa, cif, txtUbiApertura, txtUbiPorterillo, txtInsNumViviendas;
-    Integer idUser, numViviendas;
-    String usuario, listaApertura, listaPorterillo, ubiApert, ubiPort;
+    Integer idUser, numViviendas, verificaNumVivienda;
+    String usuario, listaApertura, listaPorterillo, ubiApert, ubiPort, baseApert, basePort, marcadoApertura, marcadoPorterillo;
     CheckBox checkListaApertura, checkListaPorterillo;
 
     @Override
@@ -55,6 +55,8 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         String cifUser = getIntent().getStringExtra("cif");
         listaApertura = getIntent().getStringExtra("listaApertura");
         listaPorterillo = getIntent().getStringExtra("listaPorterillo");
+        baseApert = getIntent().getStringExtra("listaApertura");
+        basePort = getIntent().getStringExtra("listaPorterillo");
         ubiApert = getIntent().getStringExtra("ubiApert");
         ubiPort = getIntent().getStringExtra("ubiPort");
         numViviendas = getIntent().getIntExtra("numViviendas",0);
@@ -204,6 +206,17 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         String error = "";
 
         protected Void doInBackground(Void... voids) {
+            if(checkListaApertura.isChecked()){
+                marcadoApertura = "si";
+            }else{
+                marcadoApertura = "no";
+            }
+            if(checkListaPorterillo.isChecked()){
+                marcadoPorterillo = "si";
+                verificaNumVivienda = Integer.parseInt(txtInsNumViviendas.getText().toString());
+            }else{
+                marcadoPorterillo = "no";
+            }
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 //Configuracion de la conexión
@@ -219,13 +232,105 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 preparedStatement.setString(1,pass.getText().toString());
                 preparedStatement.setString(2,empresa.getText().toString());
                 preparedStatement.setString(3,cif.getText().toString());
-                preparedStatement.setString(4,idUser.toString());
-                preparedStatement.setString(5,listaApertura);
-                preparedStatement.setString(6,listaPorterillo);
-                preparedStatement.setString(7,traduceDireccion(ubiApert));
-                preparedStatement.setString(8,traduceDireccion(ubiPort));
+                preparedStatement.setString(4,marcadoApertura);
+                preparedStatement.setString(5,marcadoPorterillo);
+                preparedStatement.setString(6,traduceDireccion(txtUbiApertura.getText().toString()));
+                preparedStatement.setString(7,traduceDireccion(txtUbiPorterillo.getText().toString()));
+                preparedStatement.setString(8,idUser.toString());
 
                 preparedStatement.executeUpdate();
+
+                if (marcadoApertura=="si") {
+                    if(listaApertura=="no"){
+                        int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + usuario +
+                                " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
+                        System.out.println("Sentencia ejecutada para crear tabla apertura");
+                    }
+
+                }
+                if (marcadoApertura=="no") {
+                    if(listaApertura=="si"){
+                        int resultCreate = statement.executeUpdate("DROP TABLE lista_apertura_" + usuario + ";");
+                        System.out.println("Sentencia ejecutada para borrar tabla apertura");
+                    }
+
+                }
+                if (marcadoPorterillo=="si") {
+                    if(listaPorterillo=="no"){
+                        int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + usuario +
+                                " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
+                        for (int i = 1; i < verificaNumVivienda+1; i++){
+                            int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ usuario +" (id, puerta) values ("+i+" ,"+i+");");
+                        }
+                    }else{
+                        if(verificaNumVivienda>numViviendas){
+                            for (int i = 1; i < verificaNumVivienda-numViviendas+1; i++){
+                                int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ usuario +" (id, puerta) values ("+i+numViviendas+" ,"+i+numViviendas+");");
+                            }
+                        }else if(verificaNumVivienda<numViviendas){
+                            for (int i = 1; i < verificaNumVivienda-numViviendas+1; i++){
+                                int resulInsertTable = statement.executeUpdate("delete from lista_porterillo_"+ usuario +" where id>"+verificaNumVivienda+";");
+                            }
+                        }
+                    }
+
+                }
+                if (marcadoPorterillo=="no") {
+                    if(listaPorterillo=="no"){
+                        int resultCreate = statement.executeUpdate("DROP TABLE lista_porterillo_" + usuario + ";");
+                    }
+                }
+
+            } catch (Exception e) {
+                //Guardo el error
+                error = e.toString();
+            }
+            /*try {
+                Class.forName("com.mysql.jdbc.Driver");
+                //Configuracion de la conexión
+                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+
+                //Inserto usuario
+                Statement statement = connection.createStatement();
+
+                if (marcadoApertura=="si") {
+                    if(listaApertura=="no"){
+                        int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + usuario +
+                                " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
+                    }
+
+                }
+                if (marcadoApertura=="no") {
+                    if(listaApertura=="si"){
+                        int resultCreate = statement.executeUpdate("DROP TABLE lista_apertura_" + usuario + ";");
+                    }
+
+                }
+                if (marcadoPorterillo=="si") {
+                    if(listaPorterillo=="no"){
+                        int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + usuario +
+                                " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
+                        for (int i = 1; i < verificaNumVivienda+1; i++){
+                            int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ usuario +" (id, puerta) values ("+i+" ,"+i+");");
+                        }
+                    }else{
+                        if(verificaNumVivienda>numViviendas){
+                            for (int i = 1; i < verificaNumVivienda-numViviendas+1; i++){
+                                int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ usuario +" (id, puerta) values ("+i+numViviendas+" ,"+i+numViviendas+");");
+                            }
+                        }else if(verificaNumVivienda<numViviendas){
+                            for (int i = 1; i < verificaNumVivienda-numViviendas+1; i++){
+                                int resulInsertTable = statement.executeUpdate("delete from lista_porterillo_"+ usuario +" where id>"+verificaNumVivienda+";");
+                            }
+                        }
+                    }
+
+                }
+                if (marcadoPorterillo=="no") {
+                    if(listaPorterillo=="no"){
+                        int resultCreate = statement.executeUpdate("DROP TABLE lista_porterillo_" + usuario + ";");
+                    }
+                }
 
                 // FALTA ACTUALIZAR LAS TABLAS DE APERTURA Y PORTERILLO
 
@@ -233,7 +338,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
             } catch (Exception e) {
                 //Guardo el error
                 error = e.toString();
-            }
+            }*/
             return null;
         }
 
@@ -249,6 +354,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Ups!, hubo un problema al insertar el usuario", Toast.LENGTH_LONG).show();
+                System.out.println(error);
 
             }
         }
@@ -298,4 +404,5 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         Address dir = (list.isEmpty() ? null : list.get(0));
         return dir.getAddressLine(0);
     }
+
 }
