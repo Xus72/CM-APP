@@ -2,28 +2,20 @@ package es.futurasp.gestionlistas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TableLayout;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class UsuarioListaApertura extends AppCompatActivity {
@@ -51,7 +43,6 @@ public class UsuarioListaApertura extends AppCompatActivity {
         Button btnBorrar = (Button) findViewById(R.id.btnBorrarUsuario);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnLocalizar = (Button) findViewById(R.id.btnLocalizar);
-        //tabla = new Tabla(this, (TableLayout)findViewById(R.id.tabla));
 
 
         usuarioSeleccionado = getIntent().getStringExtra("usuario");

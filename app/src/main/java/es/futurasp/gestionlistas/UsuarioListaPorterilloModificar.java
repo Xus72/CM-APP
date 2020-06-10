@@ -115,7 +115,6 @@ public class UsuarioListaPorterilloModificar extends AppCompatActivity {
                 preparedStatement.setString(3, txtNumero2.getText().toString());
                 preparedStatement.setString(4, txtNumero3.getText().toString());
                 preparedStatement.setString(5, txtObservaciones.getText().toString());
-                //preparedStatement.setString(6, puerta);
 
                 preparedStatement.executeUpdate();
 

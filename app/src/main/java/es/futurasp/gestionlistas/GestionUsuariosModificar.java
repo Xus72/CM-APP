@@ -39,8 +39,6 @@ public class GestionUsuariosModificar extends AppCompatActivity {
         cif = (EditText) findViewById(R.id.txtInsCif);
         Button btnVolver = (Button) findViewById(R.id.btnVolver);
         Button btnGuardar = (Button) findViewById(R.id.btnInsGuardar);
-        //Button btnApertura = (Button) findViewById(R.id.btnListaApertura);
-        //Button btnPorterillo = (Button) findViewById(R.id.btnListaPorterillo);
 
         txtUbiApertura = (EditText) findViewById(R.id.txtUbiApert);
         txtUbiPorterillo = (EditText) findViewById(R.id.txtUbiPort);
@@ -107,100 +105,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
             }
         });
 
-        /*btnApertura.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new consultarListaApertura().execute();
-            }
-        });
-
-        btnPorterillo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new consultarListaPorterillo().execute();
-            }
-        });*/
     }
-/*    class consultarListaApertura extends  AsyncTask<Void,Void,Void>{
-        String error = "";
-        String numero, nombre, observacion1, observacion2;
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            try{
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
-
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+usuario+" ORDER BY nombre");
-
-                while(resultSet.next()){
-                    numero = resultSet.getString(1);
-                    nombre = resultSet.getString(2);
-                    observacion1 = resultSet.getString(3);
-                    observacion2 = resultSet.getString(4);
-                }
-
-            } catch (Exception e) {
-                error.toString();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Intent intent = new Intent(getBaseContext(), GestionListaApertura.class);
-            intent.putExtra("usuario",usuario);
-            intent.putExtra("numero", numero);
-            intent.putExtra("observacion1",observacion1);
-            intent.putExtra("nombre",nombre);
-            intent.putExtra("observacion2",observacion2);
-            intent.putExtra("listaApertura",listaApertura);
-            startActivity(intent);
-        }
-    }
-
-    class consultarListaPorterillo extends  AsyncTask<Void,Void,Void>{
-        String error = "";
-        String numero1, numero2, puerta, observaciones, numero3;
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try{
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
-
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_porterillo_"+usuario+" ORDER BY puerta");
-
-                while(resultSet.next()){
-                    puerta = resultSet.getString(2);
-                    numero1 = resultSet.getString(3);
-                    numero2 = resultSet.getString(4);
-                    numero3 = resultSet.getString(5);
-                    observaciones = resultSet.getString(6);
-                }
-
-            } catch (Exception e) {
-                error.toString();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Intent intent = new Intent(getBaseContext(), GestionListaPorterillo.class);
-            intent.putExtra("usuario",usuario);
-            intent.putExtra("puerta", puerta);
-            intent.putExtra("numero1",numero1);
-            intent.putExtra("numero2",numero2);
-            intent.putExtra("numero3",numero3);
-            intent.putExtra("observaciones",observaciones);
-            intent.putExtra("listaPorterillo",listaPorterillo);
-            startActivity(intent);
-        }
-    }*/
 
     class modificarUsuario extends AsyncTask<Void,Void,Void>{
         String error = "";
@@ -274,10 +179,9 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                             }
                         }
                     }
-
                 }
                 if (marcadoPorterillo=="no") {
-                    if(listaPorterillo.equals("no")){
+                    if(listaPorterillo.equals("si")){
                         int resultCreate = statement.executeUpdate("DROP TABLE lista_porterillo_" + usuario + ";");
                     }
                 }
@@ -286,60 +190,7 @@ public class GestionUsuariosModificar extends AppCompatActivity {
                 //Guardo el error
                 error = e.toString();
             }
-            /*try {
-                Class.forName("com.mysql.jdbc.Driver");
-                //Configuracion de la conexión
-                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
 
-                //Inserto usuario
-                Statement statement = connection.createStatement();
-
-                if (marcadoApertura=="si") {
-                    if(listaApertura=="no"){
-                        int resultCreate = statement.executeUpdate("CREATE TABLE lista_apertura_" + usuario +
-                                " (numero BIGINT(20) NOT NULL, nombre VARCHAR(45) NULL, observacion1 VARCHAR(45) NULL, observacion2 VARCHAR(45) NULL, PRIMARY KEY (numero));");
-                    }
-
-                }
-                if (marcadoApertura=="no") {
-                    if(listaApertura=="si"){
-                        int resultCreate = statement.executeUpdate("DROP TABLE lista_apertura_" + usuario + ";");
-                    }
-
-                }
-                if (marcadoPorterillo=="si") {
-                    if(listaPorterillo=="no"){
-                        int resultCreate = statement.executeUpdate("CREATE TABLE lista_porterillo_" + usuario +
-                                " (id INT(11) NOT NULL, puerta INT(11) NULL, numero1 BIGINT(20) NULL, numero2 BIGINT(20) NULL, numero3 BIGINT(20) NULL, observaciones VARCHAR(45) NULL, PRIMARY KEY (id));");
-                        for (int i = 1; i < verificaNumVivienda+1; i++){
-                            int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ usuario +" (id, puerta) values ("+i+" ,"+i+");");
-                        }
-                    }else{
-                        if(verificaNumVivienda>numViviendas){
-                            for (int i = 1; i < verificaNumVivienda-numViviendas+1; i++){
-                                int resulInsertTable = statement.executeUpdate("insert into lista_porterillo_"+ usuario +" (id, puerta) values ("+i+numViviendas+" ,"+i+numViviendas+");");
-                            }
-                        }else if(verificaNumVivienda<numViviendas){
-                            for (int i = 1; i < verificaNumVivienda-numViviendas+1; i++){
-                                int resulInsertTable = statement.executeUpdate("delete from lista_porterillo_"+ usuario +" where id>"+verificaNumVivienda+";");
-                            }
-                        }
-                    }
-
-                }
-                if (marcadoPorterillo=="no") {
-                    if(listaPorterillo=="no"){
-                        int resultCreate = statement.executeUpdate("DROP TABLE lista_porterillo_" + usuario + ";");
-                    }
-                }
-
-                // FALTA ACTUALIZAR LAS TABLAS DE APERTURA Y PORTERILLO
-
-
-            } catch (Exception e) {
-                //Guardo el error
-                error = e.toString();
-            }*/
             return null;
         }
 

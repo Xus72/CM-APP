@@ -2,8 +2,6 @@ package es.futurasp.gestionlistas;
 
 import androidx.fragment.app.FragmentActivity;
 
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,9 +10,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
-import java.util.List;
 
 public class mapaUbicacionPortero extends FragmentActivity implements OnMapReadyCallback {
 
@@ -60,8 +55,6 @@ public class mapaUbicacionPortero extends FragmentActivity implements OnMapReady
         lat = Double.parseDouble(partes[0]);
         lng = Double.parseDouble(partes[1]);
         LatLng porterillo = new LatLng(lat, lng);
-        // He usado de ejemplo el Ayto de mi pueblo. En snippet se añade la descripción de la marca en el mapa
-        //mMap.addMarker(new MarkerOptions().position(porterillo).title("Ayuntamiento de El Viso del Alcor").snippet("Entrada para el parking"));
         mMap.addMarker(new MarkerOptions().position(porterillo));
         // La v de la siguiente función indica el zoom aplicado al mapa
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(porterillo, 20));

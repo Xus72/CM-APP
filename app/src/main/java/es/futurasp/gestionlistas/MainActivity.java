@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //Texto para imprimir los resultados
-        //WelcomeUser = (TextView) findViewById(R.id.WelcomeUser);
         //Almaceno usuario
         textUsuario = (EditText) findViewById(R.id.txtUser);
         //Almaceno password
@@ -85,17 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                    /*Intent i = new Intent(Intent.ACTION_CALL);
-                    i.setData(Uri.parse("tel:123456789"));
-                    startActivity(i);*/
-                    startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + 697205575)));
-                   /* if (ActivityCompat.shouldShowRequestPermissionRationale(,
-                           Manifest.permission.CALL_PHONE)) {
-                        Intent llamada1 = new Intent(Intent.ACTION_CALL);
-                        llamada1.setData(Uri.parse("tel:697205575"));
-                        startActivity(llamada1);
-                }*/
-
+                    startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + 902340344)));
                     return;
 
                 }
@@ -112,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Cambiar por el correo electrónico
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 textUsuario.setError("Usuario o contraseña incorrecta");
 
             }
-            //Toast.makeText(MainActivity.this, "Bienvenido", Toast.LENGTH_SHORT).show();
         }
     }
 }

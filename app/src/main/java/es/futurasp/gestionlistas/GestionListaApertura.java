@@ -47,16 +47,6 @@ public class GestionListaApertura extends AppCompatActivity {
             btnApertura.setVisibility(View.VISIBLE);
         }
 
-       /*btnApertura.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String usuario = su;
-                Intent intent = new Intent(getBaseContext(), UsuarioListaAperturaInsertar.class);
-                intent.putExtra("usuario",usuario);
-                startActivity(intent);
-            }
-        });*/
-
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,8 +2,6 @@ package es.futurasp.gestionlistas;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.List;
 
 public class UsuarioListaPorterilloInsertar extends AppCompatActivity {
     EditText txtPuerta, txtNumero1, txtNumero2, txtNumero3, txtObs, txtDirec;

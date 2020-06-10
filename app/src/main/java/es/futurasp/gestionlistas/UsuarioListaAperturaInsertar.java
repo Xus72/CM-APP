@@ -1,9 +1,6 @@
 package es.futurasp.gestionlistas;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -14,33 +11,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-//import org.json.simple.parser.JSONParser;
-import com.google.android.gms.common.util.IOUtils;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class UsuarioListaAperturaInsertar extends AppCompatActivity {
     EditText txtNumero;
     EditText txtNombre;
     EditText txtObs1;
     EditText txtObs2;
-    EditText direccion;
     String usuario = null;
     String obs1, obs2;
 
@@ -98,9 +77,6 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /*sql = "insert into lista_apertura_"+usuario+" (numero, nombre, observacion1, observacion2, lat, lng) " +
-                    "values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', '" + txtObs1.getText().toString() + "','" + txtObs2.getText().toString() +
-                    "','" + obtenLat(direccion.getText().toString()) + "','" + obtenLong(direccion.getText().toString()).toString() + "');";*/
             sql_nn="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2) "+
                     " values ('" + txtNumero.getText().toString() + "', '" + txtNombre.getText().toString() + "', null, null);";
             sql_nx="insert into lista_apertura_" + usuario + " (numero, nombre, observacion1, observacion2) "+
@@ -143,8 +119,6 @@ public class UsuarioListaAperturaInsertar extends AppCompatActivity {
                     System.out.println("ejecutado sql_xx");
                     System.out.println(sql_xx);
                 }
-
-                //int resultSet = statement.executeUpdate(sql);
 
                 Intent me = getIntent();
                 setResult(100, me);

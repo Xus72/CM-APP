@@ -27,7 +27,6 @@ public class CorreoContacto extends AppCompatActivity {
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String enviarcorreo = correo.getText().toString();
                 String enviarcorreo = "facebook@futurasp.es";
                 String enviarasunto = asunto.getText().toString();
                 String enviarmensaje = mensaje.getText().toString();
