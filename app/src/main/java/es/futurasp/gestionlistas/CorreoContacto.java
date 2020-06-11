@@ -27,14 +27,14 @@ public class CorreoContacto extends AppCompatActivity {
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String enviarcorreo = "facebook@futurasp.es";
+                String enviarcorreo = "sat@futurasp.es";
                 String enviarasunto = asunto.getText().toString();
                 String enviarmensaje = mensaje.getText().toString();
 
                 Intent intent = new Intent(Intent.ACTION_SEND);
 
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{enviarcorreo});
-                intent.putExtra(Intent.EXTRA_SUBJECT, enviarasunto);
+                intent.putExtra(Intent.EXTRA_SUBJECT, "[FUTURASP - Contacto APP Móvil] "+enviarasunto);
                 intent.putExtra(Intent.EXTRA_TEXT, enviarmensaje);
 
                 intent.setType("message/rfc822");
