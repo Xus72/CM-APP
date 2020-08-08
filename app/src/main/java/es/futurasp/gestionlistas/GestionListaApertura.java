@@ -63,7 +63,7 @@ public class GestionListaApertura extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             try{
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://ip/db", "user", "pass");
 
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM lista_apertura_"+usuario+" ORDER BY nombre");
