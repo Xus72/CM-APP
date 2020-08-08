@@ -67,7 +67,7 @@ public class GestionListaPorterillo extends AppCompatActivity {
             try{
                 Class.forName("com.mysql.jdbc.Driver");
 
-                Connection connection = DriverManager.getConnection("jdbc:mysql://185.155.63.198/db_android-cm", "CmAndrUser", "v5hfDugUpiWu");
+                Connection connection = DriverManager.getConnection("jdbc:mysql://ip/db", "user", "pass");
 
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(sql);
